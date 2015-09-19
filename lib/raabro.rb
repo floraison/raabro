@@ -42,12 +42,13 @@ module Raabro
 
     def match(str_or_regex)
 
-      if str_or_regex.is_a?(String)
-        l = str_or_regex.length
-        @string[@offset, l] == str_or_regex ? l : false
-      else
+      if str_or_regex.is_a?(Regexp)
         m = @string[@offset..-1].match(str_or_regex)
         m ? m[0].length : false
+      else # String or whatever responds to #to_s
+        s = str_or_regex.to_s
+        l = s.length
+        @string[@offset, l] == s ? l : false
       end
     end
   end
@@ -81,17 +82,27 @@ module Raabro
     end
   end
 
-  def self.str(name, input, string)
+  def self.match(name, input, parter, regex_or_string)
 
-    r = Tree.new(name, :str, input)
+    r = Tree.new(name, parter, input)
 
-    if l = input.match(string)
+    if l = input.match(regex_or_string)
       r.result = 1
       r.length = l
       input.offset += l
     end
 
     r
+  end
+
+  def self.str(name, input, string)
+
+    match(name, input, :str, string)
+  end
+
+  def self.rex(name, input, regex_or_string)
+
+    match(name, input, :rex, Regexp.new(regex_or_string))
   end
 
   def self.narrow(parser)
