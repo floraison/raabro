@@ -143,5 +143,25 @@ module Raabro
 
     r
   end
+
+  def self.alt(name, input, *parsers)
+
+    r = Tree.new(name, :alt, input)
+
+    c = nil
+
+    parsers.each do |pa|
+      c = parse(pa, input)
+      r.children << c
+      break if c.result == 1
+    end
+
+    if c && c.result == 1
+      r.result = 1
+      r.length = c.length
+    end
+
+    r
+  end
 end
 
