@@ -30,8 +30,8 @@ module Raabro
 
   class Input
 
-    attr_reader :string, :options
-    attr_accessor :offset
+    attr_accessor :string, :offset
+    attr_reader :options
 
     def initialize(string, options={})
 
