@@ -7,3 +7,9 @@
 
 require 'raabro'
 
+#
+# parsers
+
+def ta(i); Raabro.str(nil, i, 'ta'); end
+def to(i); Raabro.str(nil, i, 'to'); end
+

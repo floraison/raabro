@@ -55,9 +55,9 @@ module Raabro
   class Tree
 
     attr_accessor :name, :input
-    attr_accessor :result # -1 error, 0 nomatch, 1 success
+    attr_accessor :result # ((-1 error,)) 0 nomatch, 1 success
     attr_accessor :offset, :length
-    attr_accessor :note, :parter, :children
+    attr_accessor :parter, :children
 
     def initialize(name, parter, input)
 
@@ -72,7 +72,12 @@ module Raabro
 
     def to_a(opts={})
 
-      [ @name, @result, @offset, @length, @note, @parter, @children ]
+      cn =
+        opts[:leaves] && (@result == 1) && @children.empty? ?
+        @input.string[@offset, @length] :
+        @children.collect { |e| e.to_a(opts) }
+
+      [ @name, @result, @offset, @length, @note, @parter, cn ]
     end
   end
 
@@ -83,6 +88,46 @@ module Raabro
     if l = input.match(string)
       r.result = 1
       r.length = l
+      input.offset += l
+    end
+
+    r
+  end
+
+  def self.narrow(parser)
+
+    return parser if parser.is_a?(Method)
+    return method(parser) if parser.is_a?(Symbol)
+
+    k, m = parser.to_s.split('.')
+    k, m = [ Object, k ] unless m
+
+    Kernel.const_get(k).method(m)
+  end
+
+  def self.parse(parser, input)
+
+    narrow(parser).call(input)
+  end
+
+  def self.seq(name, input, *parsers)
+
+    r = Tree.new(name, :seq, input)
+
+    start = input.offset
+    c = nil
+
+    parsers.each do |pa|
+      c = parse(pa, input)
+      r.children << c
+      break if c.result != 1
+    end
+
+    if c && c.result == 1
+      r.result = 1
+      r.length = input.offset - start
+    else
+      input.offset = start
     end
 
     r
