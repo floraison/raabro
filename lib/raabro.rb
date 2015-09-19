@@ -27,5 +27,65 @@
 module Raabro
 
   VERSION = '1.0.0'
+
+  class Input
+
+    attr_reader :string, :options
+    attr_accessor :offset
+
+    def initialize(string, options={})
+
+      @string = string
+      @offset = 0
+      @options = options
+    end
+
+    def match(str_or_regex)
+
+      if str_or_regex.is_a?(String)
+        l = str_or_regex.length
+        @string[@offset, l] == str_or_regex ? l : false
+      else
+        m = @string[@offset..-1].match(str_or_regex)
+        m ? m[0].length : false
+      end
+    end
+  end
+
+  class Tree
+
+    attr_accessor :name, :input
+    attr_accessor :result # -1 error, 0 nomatch, 1 success
+    attr_accessor :offset, :length
+    attr_accessor :note, :parter, :children
+
+    def initialize(name, parter, input)
+
+      @result = 0
+      @name = name
+      @parter = parter
+      @input = input
+      @offset = input.offset
+      @length = 0
+      @children = []
+    end
+
+    def to_a(opts={})
+
+      [ @name, @result, @offset, @length, @note, @parter, @children ]
+    end
+  end
+
+  def self.str(name, input, string)
+
+    r = Tree.new(name, :str, input)
+
+    if l = input.match(string)
+      r.result = 1
+      r.length = l
+    end
+
+    r
+  end
 end
 
