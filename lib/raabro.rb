@@ -164,10 +164,10 @@ module Raabro
     r
   end
 
-  def self.rep(name, input, parser, min, max)
+  def self.rep(name, input, parser, min, max=0)
 
     min = 0 if min == nil || min < 0
-    max = nil if max < 1
+    max = nil if max.nil? || max < 1
 
     r = Tree.new(name, :rep, input)
     start = input.offset
@@ -181,7 +181,7 @@ module Raabro
       break if max && count == max
     end
 
-    if count >= min && count <= max
+    if count >= min && (max == nil || count <= max)
       r.result = 1
       r.length = input.offset - start
     else

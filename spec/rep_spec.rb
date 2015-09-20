@@ -31,7 +31,25 @@ describe Raabro do
       expect(@input.offset).to eq(0)
     end
 
-    it "succeeds (max reached)" do
+    it "fails (min not reached)" do
+
+      @input.string = 'toto'
+
+      t = Raabro.rep(:x, @input, :to, 3)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ :x, 0, 0, 0, nil, :rep, [
+          [ nil, 1, 0, 2, nil, :str, 'to' ],
+          [ nil, 1, 2, 2, nil, :str, 'to' ],
+          [ nil, 0, 4, 0, nil, :str, [] ]
+        ] ]
+      )
+      expect(@input.offset).to eq(0)
+    end
+
+    it "succeeds (max set)" do
+
+      @input.string = 'tototo'
 
       t = Raabro.rep(:x, @input, :to, 1, 2)
 
@@ -44,7 +62,21 @@ describe Raabro do
       expect(@input.offset).to eq(4)
     end
 
-    it "succeeds (min reached)"
+    it "succeeds (max not set)" do
+
+      @input.string = 'toto'
+
+      t = Raabro.rep(:x, @input, :to, 1)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ :x, 1, 0, 4, nil, :rep, [
+          [ nil, 1, 0, 2, nil, :str, 'to' ],
+          [ nil, 1, 2, 2, nil, :str, 'to' ],
+          [ nil, 0, 4, 0, nil, :str, [] ]
+        ] ]
+      )
+      expect(@input.offset).to eq(4)
+    end
   end
 end
 
