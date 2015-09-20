@@ -33,10 +33,10 @@ module Raabro
     attr_accessor :string, :offset
     attr_reader :options
 
-    def initialize(string, options={})
+    def initialize(string, offset=0, options={})
 
       @string = string
-      @offset = 0
+      @offset = offset
       @options = options
     end
 

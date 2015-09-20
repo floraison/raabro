@@ -12,26 +12,25 @@ describe Raabro do
 
   describe '.seq' do
 
-    before :each do
-
-      @input = Raabro::Input.new('tato')
-    end
-
     it "returns a tree with result == 0 in case of failure" do
 
-      t = Raabro.seq(nil, @input, :to, :ta)
+      i = Raabro::Input.new('tato')
+
+      t = Raabro.seq(nil, i, :to, :ta)
 
       expect(t.to_a).to eq(
         [ nil, 0, 0, 0, nil, :seq, [
           [ nil, 0, 0, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(0)
+      expect(i.offset).to eq(0)
     end
 
     it "returns a tree with result == 0 in case of failure (at 2nd step)" do
 
-      t = Raabro.seq(nil, @input, :ta, :ta)
+      i = Raabro::Input.new('tato')
+
+      t = Raabro.seq(nil, i, :ta, :ta)
 
       expect(
         t.to_a(:leaves => true)
@@ -41,12 +40,14 @@ describe Raabro do
           [ nil, 0, 2, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(0)
+      expect(i.offset).to eq(0)
     end
 
     it "returns a tree with result == 1 in case of success" do
 
-      t = Raabro.seq(nil, @input, :ta, :to)
+      i = Raabro::Input.new('tato')
+
+      t = Raabro.seq(nil, i, :ta, :to)
 
       expect(
         t.to_a(:leaves => true)
@@ -56,12 +57,14 @@ describe Raabro do
           [ nil, 1, 2, 2, nil, :str, 'to' ]
         ] ]
       )
-      expect(@input.offset).to eq(4)
+      expect(i.offset).to eq(4)
     end
 
     it "names the result if there is a name" do
 
-      t = Raabro.seq(:x, @input, :ta, :to)
+      i = Raabro::Input.new('tato')
+
+      t = Raabro.seq(:x, i, :ta, :to)
 
       expect(
         t.to_a(:leaves => true)
@@ -71,12 +74,14 @@ describe Raabro do
           [ nil, 1, 2, 2, nil, :str, 'to' ]
         ] ]
       )
-      expect(@input.offset).to eq(4)
+      expect(i.offset).to eq(4)
     end
 
     it "names in case of failure as well" do
 
-      t = Raabro.seq(:y, @input, :ta, :ta)
+      i = Raabro::Input.new('tato')
+
+      t = Raabro.seq(:y, i, :ta, :ta)
 
       expect(
         t.to_a(:leaves => true)
@@ -86,14 +91,14 @@ describe Raabro do
           [ nil, 0, 2, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(0)
+      expect(i.offset).to eq(0)
     end
 
     it "fails when the input string ends" do
 
-      @input.string = 'to'
+      i = Raabro::Input.new('to')
 
-      t = Raabro.seq(:z, @input, :to, :ta)
+      t = Raabro.seq(:z, i, :to, :ta)
 
       expect(
         t.to_a(:leaves => true)
@@ -103,48 +108,26 @@ describe Raabro do
           [ nil, 0, 2, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(0)
+      expect(i.offset).to eq(0)
     end
 
     it "accepts an empty input" do
 
-      @input.offset = 4
+      i = Raabro::Input.new('tato', 4)
 
-      t = Raabro.seq(nil, @input, :to, :ta)
+      t = Raabro.seq(nil, i, :to, :ta)
 
       expect(t.to_a).to eq(
         [ nil, 0, 4, 0, nil, :seq, [
           [ nil, 0, 4, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(4)
+      expect(i.offset).to eq(4)
     end
   end
 end
 
 #describe "fabr_seq()"
-#{
-#  before each
-#  {
-#    fabr_input i = { "tato", 0, 0 };
-#    fabr_tree *t = NULL;
-#  }
-#  after each
-#  {
-#    fabr_tree_free(t);
-#  }
-#
-#  fabr_tree *_ta(fabr_input *i) { return fabr_str(NULL, i, "ta"); }
-#  fabr_tree *_to(fabr_input *i) { return fabr_str(NULL, i, "to"); }
-#
-#  it "returns a tree with result == 0 in case of failure"
-#  it "returns a tree with result == 0 in case of failure (at 2nd step)"
-#  it "returns a tree with result == 1 in case of success"
-#  it "names the result if there is a name"
-#  it "names in case of failure as well"
-#  it "fails when the input string ends"
-#  it "resets the input offset in case of failure"
-#  it "accepts an empty input"
 #
 #  context "quantifiers"
 #  {
