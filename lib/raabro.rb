@@ -190,5 +190,14 @@ module Raabro
 
     r
   end
+
+  def self.ren(name, input, parser)
+
+    r = parse(parser, input)
+    r.name = name
+
+    r
+  end
+  class << self; alias rename ren; end
 end
 
