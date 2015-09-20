@@ -105,7 +105,19 @@ module Raabro
     match(name, input, :rex, Regexp.new(regex_or_string))
   end
 
+  def self.quantify(parser)
+
+    case parser
+      when '?', :qmark then [ 0, 1 ]
+      when '*', :star then [ 0, 0 ]
+      when '+', :plus then [ 1, 0 ]
+      else nil
+    end
+  end
+
   def self.narrow(parser)
+
+    raise ArgumentError.new("lone quantifier #{parser}") if quantify(parser)
 
     return parser if parser.is_a?(Method)
     return method(parser) if parser.is_a?(Symbol)
@@ -128,9 +140,20 @@ module Raabro
     start = input.offset
     c = nil
 
-    parsers.each do |pa|
-      c = parse(pa, input)
-      r.children << c
+    loop do
+
+      pa = parsers.shift
+      break unless pa
+
+      if q = quantify(parsers.first)
+        parsers.shift
+        c = rep(nil, input, pa, *q)
+        r.children.concat(c.children)
+      else
+        c = parse(pa, input)
+        r.children << c
+      end
+
       break if c.result != 1
     end
 

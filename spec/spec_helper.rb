@@ -12,6 +12,7 @@ require 'raabro'
 
 def ta(i); Raabro.str(nil, i, 'ta'); end
 def to(i); Raabro.str(nil, i, 'to'); end
+def tu(i); Raabro.str(nil, i, 'tu'); end
 
 def to_plus(input); Raabro.rep(:tos, input, :to, 1); end
 
