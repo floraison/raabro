@@ -18,3 +18,6 @@ def to_plus(input); Raabro.rep(:tos, input, :to, 1); end
 
 def nta(i); Raabro.str('the-ta', i, 'ta'); end
 
+def cha(i); Raabro.rex(nil, i, /\A[a-z]/); end
+def com(i); Raabro.str(nil, i, ','); end
+

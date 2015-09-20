@@ -241,5 +241,54 @@ module Raabro
 
     r
   end
+
+  def self.eseq(name, input, startpa, eltpa, seppa, endpa)
+
+    start = input.offset
+    r = Tree.new(name, :eseq, input)
+    r.result = 1
+    c = nil
+
+    if startpa
+      c = parse(startpa, input)
+      r.children << c
+      r.result = 0 if c.result != 1
+    end
+
+    if r.result == 1
+
+      i = 1
+
+      loop do
+
+        i = (i + 1) % 2
+        pa = i == 0 ? eltpa : seppa
+
+        c = parse(pa, input)
+        r.children << c
+
+        break if c.result != 1
+      end
+    end
+
+    if r.result == 1 && endpa
+      c = parse(endpa, input)
+      r.children << c
+      r.result = 0 if c.result != 1
+    end
+
+    if r.result == 1
+      r.length = input.offset - start
+    else
+      input.offset = start
+    end
+
+    r
+  end
+
+  def self.jseq(name, input, eltpa, seppa)
+
+    eseq(name, input, nil, eltpa, seppa, nil)
+  end
 end
 
