@@ -199,5 +199,24 @@ module Raabro
     r
   end
   class << self; alias rename ren; end
+
+  def self.all(name, input, parser)
+
+    start = input.offset
+    length = input.string.length - input.offset
+
+    r = Tree.new(name, :all, input)
+    c = parse(parser, input)
+    r.children << c
+
+    if c.length < length
+      input.offset = start
+    else
+      r.result = 1
+      r.length = c.length
+    end
+
+    r
+  end
 end
 
