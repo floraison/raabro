@@ -28,6 +28,21 @@ describe Raabro do
       expect(i.offset).to eq(0)
     end
 
+    it 'prunes' do
+
+      i = Raabro::Input.new('toto', :prune => true)
+
+      t = Raabro.rep(:x, i, :to, 3, 4)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ :x, 0, 0, 0, nil, :rep, [
+          [ nil, 1, 0, 2, nil, :str, 'to' ],
+          [ nil, 1, 2, 2, nil, :str, 'to' ]
+        ] ]
+      )
+      expect(i.offset).to eq(0)
+    end
+
     it "fails (min not reached)" do
 
       i = Raabro::Input.new('toto')
