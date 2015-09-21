@@ -92,11 +92,16 @@ module Raabro
       self
     end
 
+    def string
+
+      @input.string[@offset, @length]
+    end
+
     def to_a(opts={})
 
       cn =
         opts[:leaves] && (@result == 1) && @children.empty? ?
-        @input.string[@offset, @length] :
+        string :
         @children.collect { |e| e.to_a(opts) }
 
       [ @name, @result, @offset, @length, @note, @parter, cn ]

@@ -10,6 +10,8 @@ require 'spec_helper'
 module Sample
   module Xel include Raabro
 
+    # parser
+
     def pa(i); str(nil, i, '('); end
     def pz(i); str(nil, i, ')'); end
     def com(i); str(nil, i, ','); end
@@ -22,13 +24,31 @@ module Sample
 
     def exp(i); alt(:exp, i, :fun, :num); end
 
+    # entry point .parse
+
+    def rewrite(tree)
+
+      case tree.name
+        when :exp
+          rewrite tree.children.first
+        when :num
+          tree.string.to_i
+        when :fun
+          [ tree.children[0].string ] +
+          tree.children[1].children.map { |e| rewrite(e) }
+        else
+          fail ArgumentError.new("cannot rewrite #{tree.to_a.inspect}")
+      end
+    end
+
     def parse(input)
 
       t = all(nil, Raabro::Input.new(input, :prune => true), :exp)
 
       return nil if t.result != 1
 
-      t.children.first.shrink!.to_a(:leaves => true)
+      #t.children.first.shrink!.to_a(:leaves => true)
+      rewrite(t.children.first.shrink!)
     end
   end
 end
@@ -60,9 +80,13 @@ describe Raabro do
 
         t = Sample::Xel.fun(i)
 
-        pp t.to_a(:leaves => true)
-
         expect(t.result).to eq(1)
+
+        expect(
+          Sample::Xel.rewrite(t.shrink!)
+        ).to eq(
+          [ 'SUM', 1, [ 'MUL', 4, 5 ] ]
+        )
       end
     end
 
@@ -70,13 +94,17 @@ describe Raabro do
 
       it 'parses (success)' do
 
-        pp Sample::Xel.parse('MUL(7,3)')
+        expect(
+          Sample::Xel.parse('MUL(7,3)')
+        ).to eq(
+          [ 'MUL', 7, 3 ]
+        )
       end
 
       it 'parses (miss)' do
 
-        pp Sample::Xel.parse('MUL(7,3) ')
-        pp Sample::Xel.parse('MUL(7,3')
+        expect(Sample::Xel.parse('MUL(7,3) ')).to eq(nil)
+        expect(Sample::Xel.parse('MUL(7,3')).to eq(nil)
       end
     end
   end
