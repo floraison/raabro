@@ -94,7 +94,7 @@ module Raabro
 
   module ModuleMethods
 
-    def match(name, input, parter, regex_or_string)
+    def do_match(name, input, parter, regex_or_string)
 
       r = Raabro::Tree.new(name, parter, input)
 
@@ -109,15 +109,15 @@ module Raabro
 
     def str(name, input, string)
 
-      match(name, input, :str, string)
+      do_match(name, input, :str, string)
     end
 
     def rex(name, input, regex_or_string)
 
-      match(name, input, :rex, Regexp.new(regex_or_string))
+      do_match(name, input, :rex, Regexp.new(regex_or_string))
     end
 
-    def quantify(parser)
+    def do_quantify(parser)
 
       case parser
         when '?', :qmark then [ 0, 1 ]
@@ -127,9 +127,10 @@ module Raabro
       end
     end
 
-    def narrow(parser)
+    def do_narrow(parser)
 
-      raise ArgumentError.new("lone quantifier #{parser}") if quantify(parser)
+      raise ArgumentError.new("lone quantifier #{parser}") \
+        if do_quantify(parser)
 
       return parser if parser.is_a?(Method)
       return method(parser) if parser.is_a?(Symbol)
@@ -140,9 +141,9 @@ module Raabro
       Kernel.const_get(k).method(m)
     end
 
-    def parse(parser, input)
+    def do_parse(parser, input)
 
-      narrow(parser).call(input)
+      do_narrow(parser).call(input)
     end
 
     def seq(name, input, *parsers)
@@ -157,12 +158,12 @@ module Raabro
         pa = parsers.shift
         break unless pa
 
-        if q = quantify(parsers.first)
+        if q = do_quantify(parsers.first)
           parsers.shift
           c = rep(nil, input, pa, *q)
           r.children.concat(c.children)
         else
-          c = parse(pa, input)
+          c = do_parse(pa, input)
           r.children << c
         end
 
@@ -195,7 +196,7 @@ module Raabro
 
       parsers.each do |pa|
 
-        cc = parse(pa, input)
+        cc = do_parse(pa, input)
         r.children << cc
 
         input.offset = start
@@ -237,7 +238,7 @@ module Raabro
       count = 0
 
       loop do
-        c = parse(parser, input)
+        c = do_parse(parser, input)
         r.children << c
         break if c.result != 1
         count += 1
@@ -258,12 +259,11 @@ module Raabro
 
     def ren(name, input, parser)
 
-      r = parse(parser, input)
+      r = do_parse(parser, input)
       r.name = name
 
       r
     end
-    #class << self; alias rename ren; end
     alias rename ren
 
     def all(name, input, parser)
@@ -272,7 +272,7 @@ module Raabro
       length = input.string.length - input.offset
 
       r = ::Raabro::Tree.new(name, :all, input)
-      c = parse(parser, input)
+      c = do_parse(parser, input)
       r.children << c
 
       if c.length < length
@@ -300,7 +300,7 @@ module Raabro
       c = nil
 
       if startpa
-        c = parse(startpa, input)
+        c = do_parse(startpa, input)
         r.children << c
         r.result = 0 if c.result != 1
       end
@@ -315,7 +315,7 @@ module Raabro
           i = (i + 1) % 2
           pa = i == 0 ? eltpa : seppa
 
-          c = parse(pa, input)
+          c = do_parse(pa, input)
           r.children << c
 
           break if c.result != 1
@@ -327,7 +327,7 @@ module Raabro
       end
 
       if r.result == 1 && endpa
-        c = parse(endpa, input)
+        c = do_parse(endpa, input)
         r.children << c
         r.result = 0 if c.result != 1
       end
