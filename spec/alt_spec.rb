@@ -83,13 +83,31 @@ describe Raabro do
         t = Raabro.alt(nil, i, :onex, :twox, true)
 
         expect(t.to_a(:leaves => true)).to eq(
-          [ nil, 1, 0, 2, nil, :alt, [
+          [ nil, 1, 0, 2, nil, :altg, [
             [ :onex, 0, 0, 1, nil, :str, [] ],
             [ :twox, 1, 0, 2, nil, :str, 'xx' ]
           ] ]
         )
         expect(i.offset).to eq(2)
       end
+    end
+  end
+
+  describe '.altg' do
+
+    it 'is greedy, always' do
+
+      i = Raabro::Input.new('xx')
+
+      t = Raabro.altg(nil, i, :onex, :twox)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ nil, 1, 0, 2, nil, :altg, [
+          [ :onex, 0, 0, 1, nil, :str, [] ],
+          [ :twox, 1, 0, 2, nil, :str, 'xx' ]
+        ] ]
+      )
+      expect(i.offset).to eq(2)
     end
   end
 end

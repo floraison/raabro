@@ -181,7 +181,7 @@ module Raabro
         false
       end
 
-    r = Tree.new(name, :alt, input)
+    r = Tree.new(name, greedy ? :altg : :alt, input)
 
     start = input.offset
     c = nil
