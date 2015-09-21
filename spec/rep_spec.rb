@@ -10,16 +10,13 @@ require 'spec_helper'
 
 describe Raabro do
 
-  before :each do
-
-    @input = Raabro::Input.new('toto')
-  end
-
   describe '.rep' do
 
     it 'returns a tree with result == 0 in case of failure' do
 
-      t = Raabro.rep(:x, @input, :to, 3, 4)
+      i = Raabro::Input.new('toto')
+
+      t = Raabro.rep(:x, i, :to, 3, 4)
 
       expect(t.to_a(:leaves => true)).to eq(
         [ :x, 0, 0, 0, nil, :rep, [
@@ -28,14 +25,14 @@ describe Raabro do
           [ nil, 0, 4, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(0)
+      expect(i.offset).to eq(0)
     end
 
     it "fails (min not reached)" do
 
-      @input.string = 'toto'
+      i = Raabro::Input.new('toto')
 
-      t = Raabro.rep(:x, @input, :to, 3)
+      t = Raabro.rep(:x, i, :to, 3)
 
       expect(t.to_a(:leaves => true)).to eq(
         [ :x, 0, 0, 0, nil, :rep, [
@@ -44,14 +41,14 @@ describe Raabro do
           [ nil, 0, 4, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(0)
+      expect(i.offset).to eq(0)
     end
 
     it "succeeds (max set)" do
 
-      @input.string = 'tototo'
+      i = Raabro::Input.new('tototo')
 
-      t = Raabro.rep(:x, @input, :to, 1, 2)
+      t = Raabro.rep(:x, i, :to, 1, 2)
 
       expect(t.to_a(:leaves => true)).to eq(
         [ :x, 1, 0, 4, nil, :rep, [
@@ -59,14 +56,14 @@ describe Raabro do
           [ nil, 1, 2, 2, nil, :str, 'to' ]
         ] ]
       )
-      expect(@input.offset).to eq(4)
+      expect(i.offset).to eq(4)
     end
 
     it "succeeds (max not set)" do
 
-      @input.string = 'toto'
+      i = Raabro::Input.new('toto')
 
-      t = Raabro.rep(:x, @input, :to, 1)
+      t = Raabro.rep(:x, i, :to, 1)
 
       expect(t.to_a(:leaves => true)).to eq(
         [ :x, 1, 0, 4, nil, :rep, [
@@ -75,7 +72,7 @@ describe Raabro do
           [ nil, 0, 4, 0, nil, :str, [] ]
         ] ]
       )
-      expect(@input.offset).to eq(4)
+      expect(i.offset).to eq(4)
     end
   end
 end
