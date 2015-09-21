@@ -44,7 +44,7 @@ module Raabro
 
       if str_or_regex.is_a?(Regexp)
         m = @string[@offset..-1].match(str_or_regex)
-        m ? m[0].length : false
+        m && (m.offset(0).first == 0) ? m[0].length : false
       else # String or whatever responds to #to_s
         s = str_or_regex.to_s
         l = s.length

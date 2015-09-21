@@ -12,7 +12,7 @@ describe Raabro do
 
   describe '.rex' do
 
-    it 'returns a tree with result == 0 in case of failure' do
+    it 'hits' do
 
       i = Raabro::Input.new('toto')
 
@@ -24,7 +24,7 @@ describe Raabro do
       expect(i.offset).to eq(0)
     end
 
-    it "returns a tree with result == 1 in case of success" do
+    it 'misses' do
 
       i = Raabro::Input.new('toto')
 
@@ -34,6 +34,18 @@ describe Raabro do
         [ nil, 1, 0, 4, nil, :rex, 'toto' ]
       )
       expect(i.offset).to eq(4)
+    end
+
+    it 'misses if the match is not at the current input offset' do
+
+      i = Raabro::Input.new('tato')
+
+      t = Raabro.rex(:biga, i, /(to)+/)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ :biga, 0, 0, 0, nil, :rex, [] ]
+      )
+      expect(i.offset).to eq(0)
     end
   end
 end
