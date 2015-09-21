@@ -291,10 +291,7 @@ module Raabro
     end
 
     if r.result == 1
-
-      cc = jseq(nil, input, eltpa, seppa, true) # accept empty => true
-
-      r.children.concat(cc.children)
+      r.children.concat(jseq(nil, input, eltpa, seppa, true).children)
     end
 
     if r.result == 1 && endpa
@@ -311,9 +308,5 @@ module Raabro
 
     r
   end
-
-  #def self.jseq(name, input, eltpa, seppa)
-  #  eseq(name, input, nil, eltpa, seppa, nil)
-  #end
 end
 

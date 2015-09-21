@@ -21,3 +21,6 @@ def nta(i); Raabro.str('the-ta', i, 'ta'); end
 def cha(i); Raabro.rex(nil, i, /\A[a-z]/); end
 def com(i); Raabro.str(nil, i, ','); end
 
+def lt(i); Raabro.str(nil, i, '<'); end
+def gt(i); Raabro.str(nil, i, '>'); end
+
