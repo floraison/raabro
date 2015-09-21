@@ -36,8 +36,8 @@ module Raabro
     def initialize(string, offset=0, options={})
 
       @string = string
-      @offset = offset
-      @options = options
+      @offset = offset.is_a?(Hash) ? 0 : offset
+      @options = offset.is_a?(Hash) ? offset : options
     end
 
     def match(str_or_regex)
@@ -74,6 +74,11 @@ module Raabro
     def successful_children
 
       @children.select { |c| c.result == 1 }
+    end
+
+    def prune!
+
+      @children = successful_children
     end
 
     def to_a(opts={})
@@ -211,6 +216,8 @@ module Raabro
         r.length = c.length
         input.offset = start + r.length
       end
+
+      r.prune! if input.options[:prune]
 
       r
     end

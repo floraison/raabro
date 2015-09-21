@@ -56,6 +56,20 @@ describe Raabro do
       expect(i.offset).to eq(2)
     end
 
+    it 'prunes' do
+
+      i = Raabro::Input.new('tato', :prune => true)
+
+      t = Raabro.alt(nil, i, :to, :ta)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ nil, 1, 0, 2, nil, :alt, [
+          [ nil, 1, 0, 2, nil, :str, 'ta' ]
+        ] ]
+      )
+      expect(i.offset).to eq(2)
+    end
+
     context 'when not greedy (default)' do
 
       it 'goes with the first successful result' do
@@ -103,6 +117,20 @@ describe Raabro do
       expect(t.to_a(:leaves => true)).to eq(
         [ nil, 1, 0, 2, nil, :altg, [
           [ :onex, 0, 0, 1, nil, :str, [] ],
+          [ :twox, 1, 0, 2, nil, :str, 'xx' ]
+        ] ]
+      )
+      expect(i.offset).to eq(2)
+    end
+
+    it 'prunes' do
+
+      i = Raabro::Input.new('xx', :prune => true)
+
+      t = Raabro.altg(nil, i, :onex, :twox)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ nil, 1, 0, 2, nil, :altg, [
           [ :twox, 1, 0, 2, nil, :str, 'xx' ]
         ] ]
       )
