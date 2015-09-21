@@ -336,6 +336,8 @@ module Raabro
         input.offset = start
       end
 
+      r.prune! if input.options[:prune]
+
       r
     end
     alias jseq eseq
