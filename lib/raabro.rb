@@ -247,40 +247,17 @@ module Raabro
     r
   end
 
-  def self.jseq(name, input, eltpa, seppa, accept_empty=false)
+  def self.eseq(name, input, startpa, eltpa, seppa=nil, endpa=nil)
 
-    start = input.offset
-    r = Tree.new(name, :jseq, input)
+    jseq = false
 
-    i = 1
-
-    loop do
-
-      i = (i + 1) % 2
-      pa = i == 0 ? eltpa : seppa
-
-      c = parse(pa, input)
-      r.children << c
-
-      break if c.result != 1
+    if seppa.nil? && endpa.nil?
+      jseq = true
+      seppa = eltpa; eltpa = startpa; startpa = nil
     end
 
-    count = r.successful_children.count
-
-    if count.odd? || (count == 0 && accept_empty)
-      r.result = 1
-      r.length = input.offset - start
-    else
-      input.offset = start
-    end
-
-    r
-  end
-
-  def self.eseq(name, input, startpa, eltpa, seppa, endpa)
-
     start = input.offset
-    r = Tree.new(name, :eseq, input)
+    r = Tree.new(name, jseq ? :jseq : :eseq, input)
     r.result = 1
     c = nil
 
@@ -291,7 +268,24 @@ module Raabro
     end
 
     if r.result == 1
-      r.children.concat(jseq(nil, input, eltpa, seppa, true).children)
+
+      i = 1
+      count = 0
+
+      loop do
+
+        i = (i + 1) % 2
+        pa = i == 0 ? eltpa : seppa
+
+        c = parse(pa, input)
+        r.children << c
+
+        break if c.result != 1
+
+        count += 1
+      end
+
+      r.result = 0 if jseq && count < 1
     end
 
     if r.result == 1 && endpa
@@ -308,5 +302,6 @@ module Raabro
 
     r
   end
+  class << self; alias jseq eseq; end
 end
 
