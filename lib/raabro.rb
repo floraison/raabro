@@ -174,22 +174,48 @@ module Raabro
 
   def self.alt(name, input, *parsers)
 
+    greedy =
+      if parsers.last == true || parsers.last == false
+        parsers.pop
+      else
+        false
+      end
+
     r = Tree.new(name, :alt, input)
 
+    start = input.offset
     c = nil
 
     parsers.each do |pa|
-      c = parse(pa, input)
-      r.children << c
-      break if c.result == 1
+
+      cc = parse(pa, input)
+      r.children << cc
+
+      input.offset = start
+
+      if greedy
+        if cc.result == 1 && cc.length > (c ? c.length : -1)
+          c.result = 0 if c
+          c = cc
+        end
+      else
+        c = cc
+        break if c.result == 1
+      end
     end
 
     if c && c.result == 1
       r.result = 1
       r.length = c.length
+      input.offset = start + r.length
     end
 
     r
+  end
+
+  def self.altg(name, input, *parsers)
+
+    alt(name, input, *parsers, true)
   end
 
   def self.rep(name, input, parser, min, max=0)

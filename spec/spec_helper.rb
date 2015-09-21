@@ -24,3 +24,6 @@ def com(i); Raabro.str(nil, i, ','); end
 def lt(i); Raabro.str(nil, i, '<'); end
 def gt(i); Raabro.str(nil, i, '>'); end
 
+def onex(i); Raabro.str(:onex, i, 'x'); end
+def twox(i); Raabro.str(:twox, i, 'xx'); end
+

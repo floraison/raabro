@@ -56,6 +56,41 @@ describe Raabro do
       )
       expect(@input.offset).to eq(2)
     end
+
+    context 'when not greedy (default)' do
+
+      it 'goes with the first successful result' do
+
+        i = Raabro::Input.new('xx')
+
+        t = Raabro.alt(nil, i, :onex, :twox)
+
+        expect(t.to_a(:leaves => true)).to eq(
+          [ nil, 1, 0, 1, nil, :alt, [
+            [ :onex, 1, 0, 1, nil, :str, 'x' ]
+          ] ]
+        )
+        expect(i.offset).to eq(1)
+      end
+    end
+
+    context 'when greedy (last argument set to true)' do
+
+      it 'takes the longest successful result' do
+
+        i = Raabro::Input.new('xx')
+
+        t = Raabro.alt(nil, i, :onex, :twox, true)
+
+        expect(t.to_a(:leaves => true)).to eq(
+          [ nil, 1, 0, 2, nil, :alt, [
+            [ :onex, 0, 0, 1, nil, :str, [] ],
+            [ :twox, 1, 0, 2, nil, :str, 'xx' ]
+          ] ]
+        )
+        expect(i.offset).to eq(2)
+      end
+    end
   end
 end
 
