@@ -21,6 +21,13 @@ module Sample
     def fun(i); seq(:fun, i, :funame, :args); end
 
     def exp(i); alt(:exp, i, :fun, :num); end
+
+    def parse(input)
+
+      t = all(nil, Raabro::Input.new(input, :prune => true), :exp)
+
+      t.result == 1 ? t.to_a(:leaves => true) : nil
+    end
   end
 end
 
@@ -54,6 +61,20 @@ describe Raabro do
         pp t.to_a(:leaves => true)
 
         expect(t.result).to eq(1)
+      end
+    end
+
+    describe '.parse' do
+
+      it 'parses (success)' do
+
+        pp Sample::Xel.parse('MUL(7,3)')
+      end
+
+      it 'parses (miss)' do
+
+        pp Sample::Xel.parse('MUL(7,3) ')
+        pp Sample::Xel.parse('MUL(7,3')
       end
     end
   end
