@@ -87,247 +87,257 @@ module Raabro
     end
   end
 
-  def self.match(name, input, parter, regex_or_string)
+  module ModuleMethods
 
-    r = Tree.new(name, parter, input)
+    def match(name, input, parter, regex_or_string)
 
-    if l = input.match(regex_or_string)
-      r.result = 1
-      r.length = l
-      input.offset += l
-    end
+      r = Raabro::Tree.new(name, parter, input)
 
-    r
-  end
-
-  def self.str(name, input, string)
-
-    match(name, input, :str, string)
-  end
-
-  def self.rex(name, input, regex_or_string)
-
-    match(name, input, :rex, Regexp.new(regex_or_string))
-  end
-
-  def self.quantify(parser)
-
-    case parser
-      when '?', :qmark then [ 0, 1 ]
-      when '*', :star then [ 0, 0 ]
-      when '+', :plus then [ 1, 0 ]
-      else nil
-    end
-  end
-
-  def self.narrow(parser)
-
-    raise ArgumentError.new("lone quantifier #{parser}") if quantify(parser)
-
-    return parser if parser.is_a?(Method)
-    return method(parser) if parser.is_a?(Symbol)
-
-    k, m = parser.to_s.split('.')
-    k, m = [ Object, k ] unless m
-
-    Kernel.const_get(k).method(m)
-  end
-
-  def self.parse(parser, input)
-
-    narrow(parser).call(input)
-  end
-
-  def self.seq(name, input, *parsers)
-
-    r = Tree.new(name, :seq, input)
-
-    start = input.offset
-    c = nil
-
-    loop do
-
-      pa = parsers.shift
-      break unless pa
-
-      if q = quantify(parsers.first)
-        parsers.shift
-        c = rep(nil, input, pa, *q)
-        r.children.concat(c.children)
-      else
-        c = parse(pa, input)
-        r.children << c
+      if l = input.match(regex_or_string)
+        r.result = 1
+        r.length = l
+        input.offset += l
       end
 
-      break if c.result != 1
+      r
     end
 
-    if c && c.result == 1
-      r.result = 1
-      r.length = input.offset - start
-    else
-      input.offset = start
+    def str(name, input, string)
+
+      match(name, input, :str, string)
     end
 
-    r
-  end
+    def rex(name, input, regex_or_string)
 
-  def self.alt(name, input, *parsers)
+      match(name, input, :rex, Regexp.new(regex_or_string))
+    end
 
-    greedy =
-      if parsers.last == true || parsers.last == false
-        parsers.pop
-      else
-        false
-      end
+    def quantify(parser)
 
-    r = Tree.new(name, greedy ? :altg : :alt, input)
-
-    start = input.offset
-    c = nil
-
-    parsers.each do |pa|
-
-      cc = parse(pa, input)
-      r.children << cc
-
-      input.offset = start
-
-      if greedy
-        if cc.result == 1 && cc.length > (c ? c.length : -1)
-          c.result = 0 if c
-          c = cc
-        end
-      else
-        c = cc
-        break if c.result == 1
+      case parser
+        when '?', :qmark then [ 0, 1 ]
+        when '*', :star then [ 0, 0 ]
+        when '+', :plus then [ 1, 0 ]
+        else nil
       end
     end
 
-    if c && c.result == 1
-      r.result = 1
-      r.length = c.length
-      input.offset = start + r.length
+    def narrow(parser)
+
+      raise ArgumentError.new("lone quantifier #{parser}") if quantify(parser)
+
+      return parser if parser.is_a?(Method)
+      return method(parser) if parser.is_a?(Symbol)
+
+      k, m = parser.to_s.split('.')
+      k, m = [ Object, k ] unless m
+
+      Kernel.const_get(k).method(m)
     end
 
-    r
-  end
+    def parse(parser, input)
 
-  def self.altg(name, input, *parsers)
-
-    alt(name, input, *parsers, true)
-  end
-
-  def self.rep(name, input, parser, min, max=0)
-
-    min = 0 if min == nil || min < 0
-    max = nil if max.nil? || max < 1
-
-    r = Tree.new(name, :rep, input)
-    start = input.offset
-    count = 0
-
-    loop do
-      c = parse(parser, input)
-      r.children << c
-      break if c.result != 1
-      count += 1
-      break if max && count == max
+      narrow(parser).call(input)
     end
 
-    if count >= min && (max == nil || count <= max)
-      r.result = 1
-      r.length = input.offset - start
-    else
-      input.offset = start
-    end
+    def seq(name, input, *parsers)
 
-    r
-  end
+      r = Tree.new(name, :seq, input)
 
-  def self.ren(name, input, parser)
-
-    r = parse(parser, input)
-    r.name = name
-
-    r
-  end
-  class << self; alias rename ren; end
-
-  def self.all(name, input, parser)
-
-    start = input.offset
-    length = input.string.length - input.offset
-
-    r = Tree.new(name, :all, input)
-    c = parse(parser, input)
-    r.children << c
-
-    if c.length < length
-      input.offset = start
-    else
-      r.result = 1
-      r.length = c.length
-    end
-
-    r
-  end
-
-  def self.eseq(name, input, startpa, eltpa, seppa=nil, endpa=nil)
-
-    jseq = false
-
-    if seppa.nil? && endpa.nil?
-      jseq = true
-      seppa = eltpa; eltpa = startpa; startpa = nil
-    end
-
-    start = input.offset
-    r = Tree.new(name, jseq ? :jseq : :eseq, input)
-    r.result = 1
-    c = nil
-
-    if startpa
-      c = parse(startpa, input)
-      r.children << c
-      r.result = 0 if c.result != 1
-    end
-
-    if r.result == 1
-
-      i = 1
-      count = 0
+      start = input.offset
+      c = nil
 
       loop do
 
-        i = (i + 1) % 2
-        pa = i == 0 ? eltpa : seppa
+        pa = parsers.shift
+        break unless pa
 
-        c = parse(pa, input)
-        r.children << c
+        if q = quantify(parsers.first)
+          parsers.shift
+          c = rep(nil, input, pa, *q)
+          r.children.concat(c.children)
+        else
+          c = parse(pa, input)
+          r.children << c
+        end
 
         break if c.result != 1
-
-        count += 1
       end
 
-      r.result = 0 if jseq && count < 1
+      if c && c.result == 1
+        r.result = 1
+        r.length = input.offset - start
+      else
+        input.offset = start
+      end
+
+      r
     end
 
-    if r.result == 1 && endpa
-      c = parse(endpa, input)
+    def alt(name, input, *parsers)
+
+      greedy =
+        if parsers.last == true || parsers.last == false
+          parsers.pop
+        else
+          false
+        end
+
+      r = Tree.new(name, greedy ? :altg : :alt, input)
+
+      start = input.offset
+      c = nil
+
+      parsers.each do |pa|
+
+        cc = parse(pa, input)
+        r.children << cc
+
+        input.offset = start
+
+        if greedy
+          if cc.result == 1 && cc.length > (c ? c.length : -1)
+            c.result = 0 if c
+            c = cc
+          end
+        else
+          c = cc
+          break if c.result == 1
+        end
+      end
+
+      if c && c.result == 1
+        r.result = 1
+        r.length = c.length
+        input.offset = start + r.length
+      end
+
+      r
+    end
+
+    def altg(name, input, *parsers)
+
+      alt(name, input, *parsers, true)
+    end
+
+    def rep(name, input, parser, min, max=0)
+
+      min = 0 if min == nil || min < 0
+      max = nil if max.nil? || max < 1
+
+      r = Tree.new(name, :rep, input)
+      start = input.offset
+      count = 0
+
+      loop do
+        c = parse(parser, input)
+        r.children << c
+        break if c.result != 1
+        count += 1
+        break if max && count == max
+      end
+
+      if count >= min && (max == nil || count <= max)
+        r.result = 1
+        r.length = input.offset - start
+      else
+        input.offset = start
+      end
+
+      r
+    end
+
+    def ren(name, input, parser)
+
+      r = parse(parser, input)
+      r.name = name
+
+      r
+    end
+    #class << self; alias rename ren; end
+    alias rename ren
+
+    def all(name, input, parser)
+
+      start = input.offset
+      length = input.string.length - input.offset
+
+      r = Tree.new(name, :all, input)
+      c = parse(parser, input)
       r.children << c
-      r.result = 0 if c.result != 1
+
+      if c.length < length
+        input.offset = start
+      else
+        r.result = 1
+        r.length = c.length
+      end
+
+      r
     end
 
-    if r.result == 1
-      r.length = input.offset - start
-    else
-      input.offset = start
-    end
+    def eseq(name, input, startpa, eltpa, seppa=nil, endpa=nil)
 
-    r
+      jseq = false
+
+      if seppa.nil? && endpa.nil?
+        jseq = true
+        seppa = eltpa; eltpa = startpa; startpa = nil
+      end
+
+      start = input.offset
+      r = Tree.new(name, jseq ? :jseq : :eseq, input)
+      r.result = 1
+      c = nil
+
+      if startpa
+        c = parse(startpa, input)
+        r.children << c
+        r.result = 0 if c.result != 1
+      end
+
+      if r.result == 1
+
+        i = 1
+        count = 0
+
+        loop do
+
+          i = (i + 1) % 2
+          pa = i == 0 ? eltpa : seppa
+
+          c = parse(pa, input)
+          r.children << c
+
+          break if c.result != 1
+
+          count += 1
+        end
+
+        r.result = 0 if jseq && count < 1
+      end
+
+      if r.result == 1 && endpa
+        c = parse(endpa, input)
+        r.children << c
+        r.result = 0 if c.result != 1
+      end
+
+      if r.result == 1
+        r.length = input.offset - start
+      else
+        input.offset = start
+      end
+
+      r
+    end
+    alias jseq eseq
   end
-  class << self; alias jseq eseq; end
+  extend ModuleMethods
+
+  def self.included(target)
+
+    target.instance_eval { extend ::Raabro::ModuleMethods }
+  end
 end
 
