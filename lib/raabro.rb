@@ -142,7 +142,7 @@ module Raabro
 
     def seq(name, input, *parsers)
 
-      r = Tree.new(name, :seq, input)
+      r = ::Raabro::Tree.new(name, :seq, input)
 
       start = input.offset
       c = nil
@@ -183,7 +183,7 @@ module Raabro
           false
         end
 
-      r = Tree.new(name, greedy ? :altg : :alt, input)
+      r = ::Raabro::Tree.new(name, greedy ? :altg : :alt, input)
 
       start = input.offset
       c = nil
@@ -225,7 +225,7 @@ module Raabro
       min = 0 if min == nil || min < 0
       max = nil if max.nil? || max < 1
 
-      r = Tree.new(name, :rep, input)
+      r = ::Raabro::Tree.new(name, :rep, input)
       start = input.offset
       count = 0
 
@@ -262,7 +262,7 @@ module Raabro
       start = input.offset
       length = input.string.length - input.offset
 
-      r = Tree.new(name, :all, input)
+      r = ::Raabro::Tree.new(name, :all, input)
       c = parse(parser, input)
       r.children << c
 
@@ -286,7 +286,7 @@ module Raabro
       end
 
       start = input.offset
-      r = Tree.new(name, jseq ? :jseq : :eseq, input)
+      r = ::Raabro::Tree.new(name, jseq ? :jseq : :eseq, input)
       r.result = 1
       c = nil
 
@@ -337,7 +337,10 @@ module Raabro
 
   def self.included(target)
 
-    target.instance_eval { extend ::Raabro::ModuleMethods }
+    target.instance_eval do
+      extend ::Raabro::ModuleMethods
+      extend self
+    end
   end
 end
 

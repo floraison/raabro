@@ -9,7 +9,8 @@ require 'spec_helper'
 
 module Sample
   module Xel include Raabro
-    def self.funame(i); rex(:funame, i, /[A-Z][A-Z0-9]*/); end
+
+    def funame(i); rex(:funame, i, /[A-Z][A-Z0-9]*/); end
   end
 end
 
