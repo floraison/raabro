@@ -71,6 +71,11 @@ module Raabro
       @children = []
     end
 
+    def successful_children
+
+      @children.select { |c| c.result == 1 }
+    end
+
     def to_a(opts={})
 
       cn =
@@ -242,6 +247,36 @@ module Raabro
     r
   end
 
+  def self.jseq(name, input, eltpa, seppa, accept_empty=false)
+
+    start = input.offset
+    r = Tree.new(name, :jseq, input)
+
+    i = 1
+
+    loop do
+
+      i = (i + 1) % 2
+      pa = i == 0 ? eltpa : seppa
+
+      c = parse(pa, input)
+      r.children << c
+
+      break if c.result != 1
+    end
+
+    count = r.successful_children.count
+
+    if count.odd? || (count == 0 && accept_empty)
+      r.result = 1
+      r.length = input.offset - start
+    else
+      input.offset = start
+    end
+
+    r
+  end
+
   def self.eseq(name, input, startpa, eltpa, seppa, endpa)
 
     start = input.offset
@@ -257,18 +292,9 @@ module Raabro
 
     if r.result == 1
 
-      i = 1
+      cc = jseq(nil, input, eltpa, seppa, true) # accept empty => true
 
-      loop do
-
-        i = (i + 1) % 2
-        pa = i == 0 ? eltpa : seppa
-
-        c = parse(pa, input)
-        r.children << c
-
-        break if c.result != 1
-      end
+      r.children.concat(cc.children)
     end
 
     if r.result == 1 && endpa
@@ -286,9 +312,8 @@ module Raabro
     r
   end
 
-  def self.jseq(name, input, eltpa, seppa)
-
-    eseq(name, input, nil, eltpa, seppa, nil)
-  end
+  #def self.jseq(name, input, eltpa, seppa)
+  #  eseq(name, input, nil, eltpa, seppa, nil)
+  #end
 end
 

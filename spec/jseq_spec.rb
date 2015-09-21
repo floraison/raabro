@@ -19,7 +19,7 @@ describe Raabro do
       t = Raabro.jseq(:j, i, :cha, :com)
 
       expect(t.to_a(:leaves => true)).to eq(
-        [ :j, 1, 0, 5, nil, :eseq, [
+        [ :j, 1, 0, 5, nil, :jseq, [
           [ nil, 1, 0, 1, nil, :rex, 'a' ],
           [ nil, 1, 1, 1, nil, :str, ',' ],
           [ nil, 1, 2, 1, nil, :rex, 'b' ],
@@ -31,18 +31,51 @@ describe Raabro do
       expect(i.offset).to eq(5)
     end
 
-    it 'is OK with zero elements' do
+    it 'fails when zero elements' do
 
       i = Raabro::Input.new('')
 
       t = Raabro.jseq(:j, i, :cha, :com)
 
       expect(t.to_a(:leaves => true)).to eq(
-        [ :j, 1, 0, 0, nil, :eseq, [
+        [ :j, 0, 0, 0, nil, :jseq, [
           [ nil, 0, 0, 0, nil, :rex, [] ]
         ] ]
       )
       expect(i.offset).to eq(0)
+    end
+
+    context 'accept_empty = true' do
+
+      it 'fails when dangling sep' do
+
+        i = Raabro::Input.new('a,')
+
+        t = Raabro.jseq(:j, i, :cha, :com, true)
+
+        expect(t.to_a(:leaves => true)).to eq(
+          [ :j, 0, 0, 0, nil, :jseq, [
+            [ nil, 1, 0, 1, nil, :rex, 'a' ],
+            [ nil, 1, 1, 1, nil, :str, ',' ],
+            [ nil, 0, 2, 0, nil, :rex, [] ]
+          ] ]
+        )
+        expect(i.offset).to eq(0)
+      end
+
+      it 'succeeds when zero elements' do
+
+        i = Raabro::Input.new('')
+
+        t = Raabro.jseq(:j, i, :cha, :com, true)
+
+        expect(t.to_a(:leaves => true)).to eq(
+          [ :j, 1, 0, 0, nil, :jseq, [
+            [ nil, 0, 0, 0, nil, :rex, [] ]
+          ] ]
+        )
+        expect(i.offset).to eq(0)
+      end
     end
   end
 end
