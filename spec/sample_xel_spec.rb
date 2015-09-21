@@ -10,7 +10,17 @@ require 'spec_helper'
 module Sample
   module Xel include Raabro
 
+    def pa(i); str(nil, i, '('); end
+    def pz(i); str(nil, i, ')'); end
+    def com(i); str(nil, i, ','); end
+    def num(i); rex(:num, i, /-?[0-9]+/); end
+
+    def args(i); eseq(:args, i, :pa, :exp, :com, :pz); end
+
     def funame(i); rex(:funame, i, /[A-Z][A-Z0-9]*/); end
+    def fun(i); seq(:fun, i, :funame, :args); end
+
+    def exp(i); alt(:exp, i, :fun, :num); end
   end
 end
 
@@ -30,6 +40,20 @@ describe Raabro do
         expect(t.to_a(:leaves => true)).to eq(
           [ :funame, 1, 0, 4, nil, :rex, 'NADA' ]
         )
+      end
+    end
+
+    describe '.fun' do
+
+      it 'parses a function call' do
+
+        i = Raabro::Input.new('SUM(1,MUL(4,5))')
+
+        t = Sample::Xel.fun(i)
+
+        pp t.to_a(:leaves => true)
+
+        expect(t.result).to eq(1)
       end
     end
   end
