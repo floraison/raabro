@@ -47,7 +47,7 @@ describe Raabro do
 
       it 'parses a function call' do
 
-        i = Raabro::Input.new('SUM(1,MUL(4,5))')
+        i = Raabro::Input.new('SUM(1,MUL(4,5))', :prune => true)
 
         t = Sample::Xel.fun(i)
 
