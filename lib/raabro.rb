@@ -81,6 +81,17 @@ module Raabro
       @children = successful_children
     end
 
+    def shrink!
+
+      @children =
+        @children.inject([]) do |a, c|
+          a << c.shrink! if c.result == 1 && c.name
+          a
+        end
+
+      self
+    end
+
     def to_a(opts={})
 
       cn =

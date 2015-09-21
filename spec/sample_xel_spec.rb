@@ -26,7 +26,9 @@ module Sample
 
       t = all(nil, Raabro::Input.new(input, :prune => true), :exp)
 
-      t.result == 1 ? t.to_a(:leaves => true) : nil
+      return nil if t.result != 1
+
+      t.children.first.shrink!.to_a(:leaves => true)
     end
   end
 end
