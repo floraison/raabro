@@ -106,12 +106,17 @@ module Raabro
       nil
     end
 
-    def gather(name)
+    def gather(name, acc=[])
 
       name = name.to_s
 
-      return [ self ] if @name.to_s == name
-      @children.inject([]) { |a, c| a.concat(c.gather(name)) }
+      if @name.to_s == name
+        acc << self
+      else
+        @children.each { |c| c.gather(name, acc) }
+      end
+
+      acc
     end
 
     def nodes(path)
@@ -119,9 +124,7 @@ module Raabro
       nodes = [ self ]
 
       loop do
-        p nodes.collect { |n| n.to_a(:leaves => true) }
         name, path = path.split('.', 2)
-        p [ name, path ]
         return nil if name == nil
         nodes = nodes.inject([]) { |a, n| a.concat(n.gather(name)) }
         break if path == nil

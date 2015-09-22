@@ -26,24 +26,32 @@ describe Raabro::Tree do
     end
   end
 
-  describe '.nodes' do
+  describe '.gather' do
 
-    it 'looks up tree nodes given a path' do
+    it 'returns all the nodes with a given name' do
 
       t = Sample::Cal.parse('4 5 6 + 1 2 3 * +')
 
-      pp t.nodes('jseq.item')
+      expect(
+        t.gather('op').collect { |n| n.to_a(:leaves) }
+      ).to eq(
+        [
+          [ :op, 1, 6, 1, nil, :rex, '+' ],
+          [ :op, 1, 14, 1, nil, :rex, '*' ],
+          [ :op, 1, 16, 1, nil, :rex, '+' ]
+        ]
+      )
     end
+  end
+
+  describe '.nodes' do
+
+    it 'looks up'
   end
 
   describe '.node' do
 
-    it 'flips burgers' do
-
-      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +')
-
-      pp t.to_a(:leaves => true)
-    end
+    it 'looks up just one node'
   end
 end
 
