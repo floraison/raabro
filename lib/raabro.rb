@@ -97,7 +97,43 @@ module Raabro
       @input.string[@offset, @length]
     end
 
+    def lookup(name)
+
+      name = name.to_s
+
+      return self if @name.to_s == name
+      @children.each { |c| if n = c.lookup(name); return n; end }
+      nil
+    end
+
+    def gather(name)
+
+      name = name.to_s
+
+      return [ self ] if @name.to_s == name
+      @children.inject([]) { |a, c| a.concat(c.gather(name)) }
+    end
+
+    def nodes(path)
+
+      nodes = [ self ]
+
+      loop do
+        p nodes.collect { |n| n.to_a(:leaves => true) }
+        name, path = path.split('.', 2)
+        p [ name, path ]
+        return nil if name == nil
+        nodes = nodes.inject([]) { |a, n| a.concat(n.gather(name)) }
+        break if path == nil
+      end
+
+      nodes
+    end
+
     def to_a(opts={})
+
+      opts = Array(opts).inject({}) { |h, e| h[e] = true; h } \
+        unless opts.is_a?(Hash)
 
       cn =
         opts[:leaves] && (@result == 1) && @children.empty? ?

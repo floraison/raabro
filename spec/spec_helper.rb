@@ -29,3 +29,27 @@ def gt(i); Raabro.str(nil, i, '>'); end
 def onex(i); Raabro.str(:onex, i, 'x'); end
 def twox(i); Raabro.str(:twox, i, 'xx'); end
 
+
+#
+# test modules
+
+module Sample; end
+
+module Sample::Cal include Raabro
+
+  def sp(i); rex(nil, i, /\s+/); end
+
+  def num(i); rex(:num, i, /-?[0-9]+/); end
+  def op(i); rex(:op, i, /[+\-*\/]/); end
+  def item(i); alt(:item, i, :num, :op); end
+
+  def suite(i); jseq(nil, i, :item, :sp); end
+
+  # entry point
+
+  def parse(input)
+
+    all(nil, Raabro::Input.new(input, :prune => true), :suite)
+  end
+end
+
