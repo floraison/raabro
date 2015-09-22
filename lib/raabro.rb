@@ -186,10 +186,13 @@ module Raabro
 
     def _quantify(parser)
 
+      return nil if parser.is_a?(Symbol) && respond_to?(parser)
+        # so that :plus and co can be overriden
+
       case parser
-        when '?', :qmark then [ 0, 1 ]
-        when '*', :star then [ 0, 0 ]
-        when '+', :plus then [ 1, 0 ]
+        when '?', :q, :qmark then [ 0, 1 ]
+        when '*', :s, :star then [ 0, 0 ]
+        when '+', :p, :plus then [ 1, 0 ]
         else nil
       end
     end
