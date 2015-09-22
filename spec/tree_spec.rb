@@ -48,7 +48,7 @@ describe Raabro::Tree do
 
     it 'lists nodes pointed by the given path' do
 
-      t = Sample::Arith.parse('4 + 5')
+      t = Sample::Arith.parse('4 + 5 - 6')
 
       puts t.to_s
     end
