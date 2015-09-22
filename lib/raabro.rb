@@ -119,20 +119,6 @@ module Raabro
       acc
     end
 
-    def nodes(path)
-
-      nodes = [ self ]
-
-      loop do
-        name, path = path.split('.', 2)
-        return nil if name == nil
-        nodes = nodes.inject([]) { |a, n| a.concat(n.gather(name)) }
-        break if path == nil
-      end
-
-      nodes
-    end
-
     def to_a(opts={})
 
       opts = Array(opts).inject({}) { |h, e| h[e] = true; h } \
