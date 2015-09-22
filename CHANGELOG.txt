@@ -1,0 +1,13 @@
+
+= raabro CHANGELOG.txt
+
+
+== raabro 1.0.0  not yet released
+
+- first complete (hopefully) release
+
+
+== raabro 0.9.0
+
+- initial push to RubyGems
+
