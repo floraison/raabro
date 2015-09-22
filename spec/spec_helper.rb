@@ -53,3 +53,22 @@ module Sample::Cal include Raabro
   end
 end
 
+module Sample::Arith include Raabro
+
+  def number(i); rex(:number, i, /-?[0-9]+\s*/); end
+  def plus(i); rex(:plus, i, /\+\s*/); end
+  def minus(i); rex(:minus, i, /-\s*/); end
+
+  def addition(i); seq(:addition, i, :number, :plus, :op_or_num); end
+  def substraction(i); jseq(:substraction, i, :number, :minus, :op_or_num); end
+
+  def op_or_num(i); alt(nil, i, :addition, :substraction, :number); end
+
+  def parse(input)
+
+    p input
+
+    all(nil, Raabro::Input.new(input, prune: false), :op_or_num)
+  end
+end
+

@@ -145,6 +145,18 @@ module Raabro
 
       [ @name, @result, @offset, @length, @note, @parter, cn ]
     end
+
+    def to_s(depth=0, io=StringIO.new)
+
+      io.print "\n" if depth > 0
+      io.print '  ' * depth
+      io.print "#{@result} #{@name.inspect} #{@offset},#{@length}"
+      io.print result == 1 && children.size == 0 ? ' ' + string.inspect : ''
+
+      @children.each { |c| c.to_s(depth + 1, io) }
+
+      depth == 0 ? io.string : nil
+    end
   end
 
   module ModuleMethods

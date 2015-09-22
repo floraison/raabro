@@ -46,7 +46,12 @@ describe Raabro::Tree do
 
   describe '.nodes' do
 
-    it 'looks up'
+    it 'lists nodes pointed by the given path' do
+
+      t = Sample::Arith.parse('4 + 5')
+
+      puts t.to_s
+    end
   end
 
   describe '.node' do
