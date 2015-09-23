@@ -398,6 +398,28 @@ module Raabro
       r
     end
     alias jseq eseq
+
+    def parse(input, opts={})
+
+      fail ArgumentError.new('please define a :root') \
+        unless self.respond_to?(:root)
+
+      t =
+        if opts[:all] == false
+          _parse(:root, Raabro::Input.new(input, opts))
+        else
+          all(nil, Raabro::Input.new(input, opts), :root)
+        end
+
+      return nil if t.result != 1
+
+      t = t.children.first if t.parter == :all
+      t = opts[:shrink] == false ? t : t.shrink!
+
+      return rewrite(t) if respond_to?(:rewrite)
+
+      t
+    end
   end
   extend ModuleMethods
 

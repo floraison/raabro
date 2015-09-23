@@ -45,12 +45,7 @@ module Sample::Cal include Raabro
 
   def suite(i); jseq(nil, i, :item, :sp); end
 
-  # entry point
-
-  def parse(input)
-
-    all(nil, Raabro::Input.new(input, :prune => true), :suite)
-  end
+  alias root suite
 end
 
 module Sample::Arith include Raabro
@@ -64,9 +59,6 @@ module Sample::Arith include Raabro
 
   def op_or_num(i); alt(nil, i, :addition, :substraction, :number); end
 
-  def parse(input)
-
-    all(nil, Raabro::Input.new(input, prune: true), :op_or_num)
-  end
+  alias root op_or_num
 end
 

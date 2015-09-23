@@ -24,7 +24,7 @@ module Sample::Xel include Raabro
 
   def exp(i); alt(:exp, i, :fun, :num); end
 
-  # entry point .parse
+  alias root exp
 
   def rewrite(tree)
 
@@ -39,15 +39,6 @@ module Sample::Xel include Raabro
       else
         fail ArgumentError.new("cannot rewrite #{tree.to_a.inspect}")
     end
-  end
-
-  def parse(input)
-
-    t = all(nil, Raabro::Input.new(input, :prune => true), :exp)
-
-    return nil if t.result != 1
-
-    rewrite(t.children.first.shrink!)
   end
 end
 

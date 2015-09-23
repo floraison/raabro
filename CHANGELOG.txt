@@ -4,6 +4,8 @@
 
 == raabro 1.0.1  not yet released
 
+- provide default .parse for modules including Raabro
+
 
 == raabro 1.0.0  released 2015-09-23
 
