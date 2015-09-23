@@ -4,6 +4,8 @@
 
 == raabro 1.0.3  not yet released
 
+- drop the shrink! concept
+
 
 == raabro 1.0.2  released 2015-09-23
 

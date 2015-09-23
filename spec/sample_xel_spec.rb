@@ -36,7 +36,7 @@ module Sample::Xel include Raabro
         tree.string.to_i
       when :fun
         [ tree.children[0].string ] +
-        tree.children[1].children.collect { |e| rewrite(e) }
+        tree.children[1].children.select(&:name).collect { |e| rewrite(e) }
       else
         fail ArgumentError.new("cannot rewrite #{tree.to_a.inspect}")
     end
@@ -73,7 +73,7 @@ describe Raabro do
         expect(t.result).to eq(1)
 
         expect(
-          Sample::Xel.rewrite(t.shrink!)
+          Sample::Xel.rewrite(t)
         ).to eq(
           [ 'SUM', 1, [ 'MUL', 4, 5 ] ]
         )
@@ -100,10 +100,13 @@ describe Raabro do
   1 :fun 0,9
     1 :funame 0,3 "MUL"
     1 :args 3,6
+      1 nil 3,1 "("
       1 :exp 4,1
         1 :num 4,1 "7"
+      1 nil 5,1 ","
       1 :exp 6,2
         1 :num 6,2 "-3"
+      1 nil 8,1 ")"
         }.strip)
       end
 

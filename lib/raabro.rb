@@ -81,17 +81,6 @@ module Raabro
       @children = successful_children
     end
 
-    def shrink!
-
-      @children =
-        @children.inject([]) do |a, c|
-          a << c.shrink! if c.result == 1 && c.name
-          a
-        end
-
-      self
-    end
-
     def string
 
       @input.string[@offset, @length]
@@ -401,6 +390,8 @@ module Raabro
 
     def parse(input, opts={})
 
+      opts[:prune] = true unless opts.has_key?(:prune)
+
       root = self.respond_to?(:root) ? :root : @last
 
       t =
@@ -413,7 +404,6 @@ module Raabro
       return nil if opts[:prune] != false && t.result != 1
 
       t = t.children.first if t.parter == :all
-      t = (opts[:prune] == false) || (opts[:shrink] == false) ? t : t.shrink!
 
       return rewrite(t) if opts[:rewrite] != false && respond_to?(:rewrite)
 
