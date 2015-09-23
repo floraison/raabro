@@ -1,16 +1,10 @@
 
-# raabro
+#
+# A sample raabro parser/rewriter
+#
+# Thu Sep 24 06:18:57 JST 2015
+#
 
-[![Build Status](https://secure.travis-ci.org/jmettraux/raabro.png)](http://travis-ci.org/jmettraux/raabro)
-[![Gem Version](https://badge.fury.io/rb/raabro.png)](http://badge.fury.io/rb/raabro)
-
-A very dumb PEG parser library.
-
-Son to [aabro](https://github.com/flon-io/aabro), grandson to [neg](https://github.com/jmettraux/neg), grand-grandson to [parslet](https://github.com/kschiess/parslet).
-
-## a sample parser/rewriter
-
-```ruby
 require 'raabro'
 
 
@@ -55,12 +49,4 @@ p Fun.parse('mul(1, add(-2, 3))')
 
 p Fun.parse('mul (1, 2)')
   # => nil (doesn't accept a space after the function name)
-```
-
-This sample is available at: [doc/readme0.rb](doc/readme0.rb).
-
-
-## LICENSE
-
-MIT, see [LICENSE.txt](LICENSE.txt)
 
