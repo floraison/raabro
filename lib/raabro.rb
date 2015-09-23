@@ -410,7 +410,7 @@ module Raabro
           all(nil, Raabro::Input.new(input, opts), root)
         end
 
-      return nil if t.result != 1
+      return nil if opts[:prune] != false && t.result != 1
 
       t = t.children.first if t.parter == :all
       t = opts[:shrink] == false ? t : t.shrink!
