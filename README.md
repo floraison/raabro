@@ -73,6 +73,13 @@ The first parameter is the name used by rewrite rules.
 The second parameter is a `Raabro::Input` instance, mostly a wrapped string.
 
 ```ruby
+def str(name, input, string)
+  # matching a string
+
+def rex(name, input, regex_or_string)
+  # matching a regexp
+  # no need for ^ or \A, checks the match occurs at current offset
+
 def seq(name, input, *parsers)
   # a sequence of parsers
 
