@@ -2,7 +2,7 @@
 = raabro CHANGELOG.txt
 
 
-== raabro 1.0.1  not yet released
+== raabro 1.0.1  released 2015-09-23
 
 - take last parser as default :root
 - provide default .parse for modules including Raabro
