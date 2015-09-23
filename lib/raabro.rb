@@ -413,7 +413,7 @@ module Raabro
       return nil if opts[:prune] != false && t.result != 1
 
       t = t.children.first if t.parter == :all
-      t = opts[:shrink] == false ? t : t.shrink!
+      t = (opts[:prune] == false) || (opts[:shrink] == false) ? t : t.shrink!
 
       return rewrite(t) if opts[:rewrite] != false && respond_to?(:rewrite)
 

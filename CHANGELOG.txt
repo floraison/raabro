@@ -4,6 +4,7 @@
 
 == raabro 1.0.2  not yet released
 
+- don't let parse() shrink tree when prune: false
 - let parse() return tree anyway when prune: false
 - add parse(s, rewrite: false) option
 
