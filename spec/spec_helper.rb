@@ -44,8 +44,6 @@ module Sample::Cal include Raabro
   def item(i); alt(:item, i, :num, :op); end
 
   def suite(i); jseq(nil, i, :item, :sp); end
-
-  alias root suite
 end
 
 module Sample::Arith include Raabro
@@ -58,7 +56,5 @@ module Sample::Arith include Raabro
   def substraction(i); seq(:substraction, i, :number, :minus, :op_or_num); end
 
   def op_or_num(i); alt(nil, i, :addition, :substraction, :number); end
-
-  alias root op_or_num
 end
 

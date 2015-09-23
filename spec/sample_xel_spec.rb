@@ -24,7 +24,8 @@ module Sample::Xel include Raabro
 
   def exp(i); alt(:exp, i, :fun, :num); end
 
-  alias root exp
+  #alias root exp
+    # not necessary since Raabro takes the last defined parser as the root
 
   def rewrite(tree)
 

@@ -4,6 +4,7 @@
 
 == raabro 1.0.1  not yet released
 
+- take last parser as default :root
 - provide default .parse for modules including Raabro
 
 

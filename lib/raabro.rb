@@ -401,14 +401,13 @@ module Raabro
 
     def parse(input, opts={})
 
-      fail ArgumentError.new('please define a :root') \
-        unless self.respond_to?(:root)
+      root = self.respond_to?(:root) ? :root : @last
 
       t =
         if opts[:all] == false
-          _parse(:root, Raabro::Input.new(input, opts))
+          _parse(root, Raabro::Input.new(input, opts))
         else
-          all(nil, Raabro::Input.new(input, opts), :root)
+          all(nil, Raabro::Input.new(input, opts), root)
         end
 
       return nil if t.result != 1
@@ -419,6 +418,17 @@ module Raabro
       return rewrite(t) if respond_to?(:rewrite)
 
       t
+    end
+
+    attr_accessor :last
+
+    def method_added(name)
+
+      m = method(name)
+      return unless m.arity == 1
+      return unless m.parameters[0][1] == :i || m.parameters[0][1] == :input
+
+      @last = name.to_sym
     end
   end
   extend ModuleMethods
