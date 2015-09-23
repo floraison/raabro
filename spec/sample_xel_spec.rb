@@ -91,6 +91,22 @@ describe Raabro do
         )
       end
 
+      it 'parses (rewrite: false, success)' do
+
+        expect(
+          Sample::Xel.parse('MUL(7,-3)', rewrite: false).to_s
+        ).to eq(%{
+1 :exp 0,9
+  1 :fun 0,9
+    1 :funame 0,3 "MUL"
+    1 :args 3,6
+      1 :exp 4,1
+        1 :num 4,1 "7"
+      1 :exp 6,2
+        1 :num 6,2 "-3"
+        }.strip)
+      end
+
       it 'parses (miss)' do
 
         expect(Sample::Xel.parse('MUL(7,3) ')).to eq(nil)

@@ -4,6 +4,8 @@
 
 == raabro 1.0.2  not yet released
 
+- add parse(s, rewrite: false) option
+
 
 == raabro 1.0.1  released 2015-09-23
 

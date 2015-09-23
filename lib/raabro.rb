@@ -415,7 +415,7 @@ module Raabro
       t = t.children.first if t.parter == :all
       t = opts[:shrink] == false ? t : t.shrink!
 
-      return rewrite(t) if respond_to?(:rewrite)
+      return rewrite(t) if opts[:rewrite] != false && respond_to?(:rewrite)
 
       t
     end
