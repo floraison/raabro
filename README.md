@@ -8,7 +8,14 @@ A very dumb PEG parser library.
 
 Son to [aabro](https://github.com/flon-io/aabro), grandson to [neg](https://github.com/jmettraux/neg), grand-grandson to [parslet](https://github.com/kschiess/parslet).
 
+
 ## a sample parser/rewriter
+
+You use raabro by providing the parsing rules, then some rewrite rules.
+
+The parsing rules make use of the raabro basic parsers `seq`, `alt`, `str`, `rex`, `eseq`, ...
+
+The rewrite rules match names passed as first argument to the basic parsers to rewrite the resulting parse trees.
 
 ```ruby
 require 'raabro'
@@ -58,6 +65,35 @@ p Fun.parse('mul (1, 2)')
 ```
 
 This sample is available at: [doc/readme0.rb](doc/readme0.rb).
+
+
+## basic parsers
+
+The first parameter is the name used by rewrite rules.
+The second parameter is a `Raabro::Input` instance, mostly a wrapped string.
+
+```ruby
+def seq(name, input, *parsers)
+  # a sequence of parsers
+
+def alt(name, input, *parsers)
+  # tries the parsers returns as soon as one succeeds
+
+def altg(name, input, *parsers)
+  # tries all the parsers, returns with the longest match
+
+def rep(name, input, parser, min, max=0)
+  # repeats the the wrapped parser
+
+def ren(name, input, parser)
+  # renames the output of the wrapped parser
+
+def jseq(name, input, eltpa, seppa)
+  # seq(name, input, eltpa, seppa, eltpa, seppa, eltpaa, seppa, ...)
+
+def eseq(name, input, startpa, eltpa, seppa, endpa)
+  # seq(name, input, startpa, eltpa, seppa, eltpa, seppa, ..., endpa)
+```
 
 
 ## LICENSE
