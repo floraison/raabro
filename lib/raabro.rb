@@ -388,6 +388,17 @@ module Raabro
     end
     alias jseq eseq
 
+    attr_accessor :last
+
+    def method_added(name)
+
+      m = method(name)
+      return unless m.arity == 1
+      return unless m.parameters[0][1] == :i || m.parameters[0][1] == :input
+
+      @last = name.to_sym
+    end
+
     def parse(input, opts={})
 
       opts[:prune] = true unless opts.has_key?(:prune)
@@ -405,20 +416,17 @@ module Raabro
 
       t = t.children.first if t.parter == :all
 
-      return rewrite(t) if opts[:rewrite] != false && respond_to?(:rewrite)
+      return rewrite(t) if opts[:rewrite] != false && rewrite(0) == true
 
       t
     end
 
-    attr_accessor :last
+    def rewrite(tree)
 
-    def method_added(name)
+      return !! methods.find { |m| m.to_s.match(/^rewrite_/) } if tree == 0
+        # return true when "rewrite_xxx" methods seem to have been provided
 
-      m = method(name)
-      return unless m.arity == 1
-      return unless m.parameters[0][1] == :i || m.parameters[0][1] == :input
-
-      @last = name.to_sym
+      send("rewrite_#{tree.name}", tree)
     end
   end
   extend ModuleMethods

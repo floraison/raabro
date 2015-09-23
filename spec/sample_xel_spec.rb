@@ -10,7 +10,7 @@ require 'spec_helper'
 
 module Sample::Xel include Raabro
 
-  # parser
+  # parse
 
   def pa(i); str(nil, i, '('); end
   def pz(i); str(nil, i, ')'); end
@@ -27,19 +27,14 @@ module Sample::Xel include Raabro
   #alias root exp
     # not necessary since Raabro takes the last defined parser as the root
 
-  def rewrite(tree)
+  # rewrite
 
-    case tree.name
-      when :exp
-        rewrite tree.children.first
-      when :num
-        tree.string.to_i
-      when :fun
-        [ tree.children[0].string ] +
-        tree.children[1].children.select(&:name).collect { |e| rewrite(e) }
-      else
-        fail ArgumentError.new("cannot rewrite #{tree.to_a.inspect}")
-    end
+  def rewrite_exp(t); rewrite(t.children[0]); end
+  def rewrite_num(t); t.string.to_i; end
+
+  def rewrite_fun(t)
+    [ t.children[0].string ] +
+    t.children[1].children.inject([]) { |a, e| a << rewrite(e) if e.name; a }
   end
 end
 
