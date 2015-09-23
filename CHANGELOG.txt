@@ -2,7 +2,7 @@
 = raabro CHANGELOG.txt
 
 
-== raabro 1.0.3  not yet released
+== raabro 1.0.3  released 2015-09-23
 
 - drop the shrink! concept
 
