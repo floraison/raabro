@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.authors = [ 'John Mettraux' ]
   s.email = [ 'jmettraux@gmail.com' ]
-  s.homepage = 'http://github.com/jmettraux/rufus-scheduler'
+  s.homepage = 'http://github.com/jmettraux/raabro'
   s.rubyforge_project = 'rufus'
   s.license = 'MIT'
   s.summary = 'a very dumb PEG parser library'
