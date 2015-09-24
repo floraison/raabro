@@ -174,15 +174,9 @@ module Raabro
 
     def _narrow(parser)
 
-      raise ArgumentError.new("lone quantifier #{parser}") if _quantify(parser)
+      fail ArgumentError.new("lone quantifier #{parser}") if _quantify(parser)
 
-      return parser if parser.is_a?(Method)
-      return method(parser) if parser.is_a?(Symbol)
-
-      k, m = parser.to_s.split('.')
-      k, m = [ Object, k ] unless m
-
-      Kernel.const_get(k).method(m)
+      method(parser.to_sym)
     end
 
     def _parse(parser, input)

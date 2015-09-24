@@ -4,6 +4,8 @@
 
 == raabro 1.0.5  not yet released
 
+- drop complications in _narrow(parser)
+
 
 == raabro 1.0.4  released 2015-09-24
 
