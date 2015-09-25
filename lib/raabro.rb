@@ -395,6 +395,11 @@ module Raabro
 
     def parse(input, opts={})
 
+      d = opts[:debug].to_i
+      opts[:rewrite] = false if d > 0
+      opts[:all] = false if d > 1
+      opts[:prune] = false if d > 2
+
       opts[:prune] = true unless opts.has_key?(:prune)
 
       root = self.respond_to?(:root) ? :root : @last

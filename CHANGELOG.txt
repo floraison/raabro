@@ -4,6 +4,7 @@
 
 == raabro 1.0.5  not yet released
 
+- allow for .parse(s, debug: 1 to 3)
 - drop complications in _narrow(parser)
 
 
