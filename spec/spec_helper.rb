@@ -1,6 +1,6 @@
 
 #
-# Specifying rufus-scheduler
+# Specifying raabro
 #
 # Sat Sep 19 21:12:35 JST 2015
 #
