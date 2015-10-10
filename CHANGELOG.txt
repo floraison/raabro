@@ -2,6 +2,11 @@
 = raabro CHANGELOG.txt
 
 
+== raabro 1.0.6  not yet released
+
+- unlock custom `rewrite(t)`
+
+
 == raabro 1.0.5  released 2015-09-25
 
 - allow for .parse(s, debug: 1 to 3)

@@ -26,7 +26,7 @@
 
 module Raabro
 
-  VERSION = '1.0.5'
+  VERSION = '1.0.6'
 
   class Input
 
