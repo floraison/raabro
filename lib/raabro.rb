@@ -415,7 +415,7 @@ module Raabro
 
       t = t.children.first if t.parter == :all
 
-      return rewrite(t) if opts[:rewrite] != false && rewrite(0) == true
+      return rewrite(t) if opts[:rewrite] != false
 
       t
     end

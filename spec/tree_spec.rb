@@ -14,7 +14,7 @@ describe Raabro::Tree do
 
     it 'returns the first node with the given name' do
 
-      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +')
+      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
 
       expect(
         t.lookup('item').to_a(:leaves)
@@ -30,7 +30,7 @@ describe Raabro::Tree do
 
     it 'returns all the nodes with a given name' do
 
-      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +')
+      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
 
       expect(
         t.gather('op').collect { |n| n.to_a(:leaves) }
