@@ -66,6 +66,23 @@ p Fun.parse('mul (1, 2)')
 
 This sample is available at: [doc/readme0.rb](doc/readme0.rb).
 
+## custom rewrite()
+
+By default, a parser gets a `rewrite(t)` that looks at the parse tree node names and calls the corresponding `rewrite_{node_name}()`.
+
+It's OK to provide a custom `rewrite(t)` function.
+
+```ruby
+module Hello include Raabro
+
+  def hello(i); str(:hello, i, 'hello'); end
+
+  def rewrite(t)
+    [ :ok, t.string ]
+  end
+end
+```
+
 
 ## basic parsers
 
