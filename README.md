@@ -92,9 +92,9 @@ One makes a parser by composing basic parsers, for example:
   def funame(i); rex(:funame, i, /[a-z][a-z0-9]*/); end
   def fun(i); seq(:fun, i, :funame, :args); end
 ```
-where the `fun` parser is a sequence combining firs the `funame` parser then the `args` one. `:fun` (the first argument to the basic parser `seq`) will be the name of the resulting (local) parse tree.
+where the `fun` parser is a sequence combining the `funame` parser then the `args` one. `:fun` (the first argument to the basic parser `seq`) will be the name of the resulting (local) parse tree.
 
-Here is a list of the basic parsers provided by Raabro.
+Below is a list of the basic parsers provided by Raabro.
 
 The first parameter to the basic parser is the name used by rewrite rules.
 The second parameter is a `Raabro::Input` instance, mostly a wrapped string.
