@@ -132,6 +132,16 @@ module Raabro
 
       depth == 0 ? io.string : nil
     end
+
+    def odd_children
+
+      cs = []; @children.each_with_index { |c, i| cs << c if i.odd? }; cs
+    end
+
+    def even_children
+
+      cs = []; @children.each_with_index { |c, i| cs << c if i.even? }; cs
+    end
   end
 
   module ModuleMethods

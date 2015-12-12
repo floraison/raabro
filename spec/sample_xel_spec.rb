@@ -33,8 +33,10 @@ module Sample::Xel include Raabro
   def rewrite_num(t); t.string.to_i; end
 
   def rewrite_fun(t)
-    [ t.children[0].string ] +
-    t.children[1].children.inject([]) { |a, e| a << rewrite(e) if e.name; a }
+
+    #[ t.children[0].string ] +
+    #t.children[1].children.inject([]) { |a, e| a << rewrite(e) if e.name; a }
+    [ t.children[0].string ] + t.children[1].odd_children.map { |c| rewrite(c) }
   end
 end
 

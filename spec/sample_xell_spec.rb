@@ -36,10 +36,11 @@ module Sample::Xell include Raabro
 
   def rewrite_fun(t)
 
-    as = []
-    t.children[1].children.each_with_index { |e, i| as << e if i.odd? }
-
-    [ t.children[0].string ] + as.collect { |a| rewrite(a) }
+    #as = []
+    #t.children[1].children.each_with_index { |e, i| as << e if i.odd? }
+    #[ t.children[0].string ] + as.collect { |a| rewrite(a) }
+    [ t.children[0].string ] +
+    t.children[1].odd_children.collect { |a| rewrite(a) }
   end
 end
 
