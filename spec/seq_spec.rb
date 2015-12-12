@@ -234,7 +234,11 @@ describe Raabro do
         t = Raabro.seq(nil, i, :to_star, '*');
 
         expect(t.to_a(:leaves => true)).to eq(
-          []
+          [ nil, 1, 0, 0, nil, :seq, [
+            [ nil, 1, 0, 0, nil, :rep, [
+              [ nil, 0, 0, 0, nil, :str, [] ]
+            ] ]
+          ] ]
         )
       end
     end
@@ -281,7 +285,11 @@ describe Raabro do
         t = Raabro.seq(nil, i, :to_star, '+');
 
         expect(t.to_a(:leaves => true)).to eq(
-          []
+          [ nil, 1, 0, 0, nil, :seq, [
+            [ nil, 1, 0, 0, nil, :rep, [
+              [ nil, 0, 0, 0, nil, :str, [] ]
+            ] ]
+          ] ]
         )
       end
     end

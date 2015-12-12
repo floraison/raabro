@@ -280,6 +280,7 @@ module Raabro
         r.children << c
         break if c.result != 1
         count += 1
+        break if c.length < 1
         break if max && count == max
       end
 
