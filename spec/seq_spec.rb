@@ -226,6 +226,17 @@ describe Raabro do
         )
         expect(i.offset).to eq(8)
       end
+
+      it 'stops when there is no progress' do
+
+        i = Raabro::Input.new('abc')
+
+        t = Raabro.seq(nil, i, :to_star, '*');
+
+        expect(t.to_a(:leaves => true)).to eq(
+          []
+        )
+      end
     end
 
     describe 'the plus quantifier' do
@@ -261,6 +272,17 @@ describe Raabro do
           ] ]
         )
         expect(i.offset).to eq(0)
+      end
+
+      it 'stops when there is no progress' do
+
+        i = Raabro::Input.new('abc')
+
+        t = Raabro.seq(nil, i, :to_star, '+');
+
+        expect(t.to_a(:leaves => true)).to eq(
+          []
+        )
       end
     end
   end

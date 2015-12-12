@@ -17,6 +17,7 @@ def to(i); Raabro.str(nil, i, 'to'); end
 def tu(i); Raabro.str(nil, i, 'tu'); end
 
 def to_plus(input); Raabro.rep(:tos, input, :to, 1); end
+def to_star(input); Raabro.rep(nil, input, :to, 0); end
 
 def nta(i); Raabro.str('the-ta', i, 'ta'); end
 
