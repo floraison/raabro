@@ -136,6 +136,20 @@ describe Raabro do
       )
       expect(i.offset).to eq(2)
     end
+
+    it 'declares a single winner' do
+
+      i = Raabro::Input.new('xx', :prune => true)
+
+      t = Raabro.altg(nil, i, :twox, :onex)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ nil, 1, 0, 2, nil, :altg, [
+          [ :twox, 1, 0, 2, nil, :str, 'xx' ]
+        ] ]
+      )
+      expect(i.offset).to eq(2)
+    end
   end
 end
 
