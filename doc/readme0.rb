@@ -20,23 +20,25 @@ module Fun include Raabro
 
   def num(i); rex(:num, i, /-?[0-9]+\s*/); end
 
-  def args(i); eseq(:args, i, :pa, :exp, :com, :pz); end
-  def funame(i); rex(:funame, i, /[a-z][a-z0-9]*/); end
+  def args(i); eseq(nil, i, :pa, :exp, :com, :pz); end
+  def funame(i); rex(nil, i, /[a-z][a-z0-9]*/); end
   def fun(i); seq(:fun, i, :funame, :args); end
 
-  def exp(i); alt(:exp, i, :fun, :num); end
+  def exp(i); alt(nil, i, :fun, :num); end
 
   # rewrite
   #
   # Names above (:num, :fun, ...) get a rewrite_xxx function.
   # "t" stands for "tree".
+  #
+  # The trees with a nil name are handled by rewrite_(tree) a default
+  # rewrite function
 
-  def rewrite_exp(t); rewrite(t.children[0]); end
   def rewrite_num(t); t.string.to_i; end
 
   def rewrite_fun(t)
     [ t.children[0].string ] +
-    t.children[1].children.inject([]) { |a, e| a << rewrite(e) if e.name; a }
+    t.children[1].odd_children.collect { |a| rewrite(a) }
   end
 end
 
