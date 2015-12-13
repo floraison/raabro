@@ -431,6 +431,12 @@ module Raabro
       t
     end
 
+    def rewrite_(tree)
+
+      c = tree.children.find { |c| c.length > 0 || c.name }
+      c ? rewrite(c) : nil
+    end
+
     def rewrite(tree)
 
       return !! methods.find { |m| m.to_s.match(/^rewrite_/) } if tree == 0

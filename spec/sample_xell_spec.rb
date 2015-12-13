@@ -26,11 +26,13 @@ module Sample::Xell include Raabro
 
   # rewrite
 
-  def rewrite_(t) # shouldn't that be part of raabro?
-
-    c = t.children.find { |c| c.length > 0 || c.name }
-    c ? rewrite(c) : nil
-  end
+  #def rewrite_(t)
+  #
+  #  c = t.children.find { |c| c.length > 0 || c.name }
+  #  c ? rewrite(c) : nil
+  #end
+    #
+    # part of aabro now
 
   def rewrite_num(t); t.string.to_i; end
 
