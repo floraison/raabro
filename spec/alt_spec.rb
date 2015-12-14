@@ -150,6 +150,20 @@ describe Raabro do
       )
       expect(i.offset).to eq(2)
     end
+
+    it 'takes the longest and latest winner' do
+
+      i = Raabro::Input.new('xx', :prune => true)
+
+      t = Raabro.altg(nil, i, :twox, :onex, :deux)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ nil, 1, 0, 2, nil, :altg, [
+          [ :deux, 1, 0, 2, nil, :str, 'xx' ]
+        ] ]
+      )
+      expect(i.offset).to eq(2)
+    end
   end
 end
 

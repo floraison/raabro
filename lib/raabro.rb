@@ -250,7 +250,7 @@ module Raabro
         input.offset = start
 
         if greedy
-          if cc.result == 1 && cc.length > (c ? c.length : -1)
+          if cc.result == 1 && cc.length >= (c ? c.length : -1)
             c.result = 0 if c
             c = cc
           else
