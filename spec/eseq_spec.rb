@@ -49,6 +49,21 @@ describe Raabro do
       expect(i.offset).to eq(5)
     end
 
+    it 'parses <>' do
+
+      i = Raabro::Input.new('<>', :prune => true)
+
+      t = Raabro.eseq(:list, i, :lt, :cha, :com, :gt)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [ :list, 1, 0, 2, nil, :eseq, [
+          [ nil, 1, 0, 1, nil, :str, '<' ],
+          [ nil, 1, 1, 1, nil, :str, '>' ]
+        ] ]
+      )
+      expect(i.offset).to eq(2)
+    end
+
     context 'no start parser' do
 
       it 'parses successfully' do
