@@ -124,7 +124,7 @@ module Raabro
         elsif opts[:children] != false
           @children.collect { |e| e.to_a(opts) }
         else
-          nil
+          @children.length
         end
 
       [ @name, @result, @offset, @length, @note, @parter, cn ]
