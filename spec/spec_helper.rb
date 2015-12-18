@@ -18,6 +18,7 @@ def tu(i); Raabro.str(nil, i, 'tu'); end
 
 def to_plus(input); Raabro.rep(:tos, input, :to, 1); end
 def to_star(input); Raabro.rep(nil, input, :to, 0); end
+def to_qmark(input); Raabro.rep(nil, input, :to, 0, 1); end
 
 def nta(i); Raabro.str('the-ta', i, 'ta'); end
 
@@ -30,6 +31,12 @@ def gt(i); Raabro.str(nil, i, '>'); end
 def onex(i); Raabro.str(:onex, i, 'x'); end
 def twox(i); Raabro.str(:twox, i, 'xx'); end
 def deux(i); Raabro.str(:deux, i, 'xx'); end
+
+def val(i); Raabro.alt(nil, i, :cha, :arr); end
+def val_qmark(i); Raabro.rep(nil, i, :val, 0, 1); end
+def sbstart(i); Raabro.str(nil, i, '['); end
+def sbend(i); Raabro.str(nil, i, ']'); end
+def arr(i); Raabro.eseq(nil, i, :sbstart, :val_qmark, :com, :sbend); end
 
 
 #

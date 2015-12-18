@@ -51,6 +51,11 @@ module Raabro
         @string[@offset, l] == s ? l : false
       end
     end
+
+    def tring(l=-1)
+
+      l < 0 ? @string[@offset..l] : @string[@offset, l]
+    end
   end
 
   class Tree
@@ -114,9 +119,13 @@ module Raabro
         unless opts.is_a?(Hash)
 
       cn =
-        opts[:leaves] && (@result == 1) && @children.empty? ?
-        string :
-        @children.collect { |e| e.to_a(opts) }
+        if opts[:leaves] && (@result == 1) && @children.empty?
+          string
+        elsif opts[:children] != false
+          @children.collect { |e| e.to_a(opts) }
+        else
+          nil
+        end
 
       [ @name, @result, @offset, @length, @note, @parter, cn ]
     end
@@ -191,6 +200,10 @@ module Raabro
 
     def _parse(parser, input)
 
+      #p [ caller.length, parser, input.tring ]
+      #r = _narrow(parser).call(input)
+      #p [ caller.length, parser, input.tring, r.to_a(children: false) ]
+      #r
       _narrow(parser).call(input)
     end
 
