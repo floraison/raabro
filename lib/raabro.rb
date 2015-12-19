@@ -380,6 +380,9 @@ module Raabro
           pa = i == 0 ? eltpa : seppa
 
           c = _parse(pa, input)
+
+          break if c.length < 1
+
           r.children << c
 
           break if c.result != 1

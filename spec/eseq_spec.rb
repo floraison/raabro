@@ -129,20 +129,12 @@ describe Raabro do
 
         i = Raabro::Input.new('[]', :prune => true)
 
-#def com(i); Raabro.str(nil, i, ','); end
-#def lt(i); Raabro.str(nil, i, '<'); end
-#def gt(i); Raabro.str(nil, i, '>'); end
-#def to_qmark(input); Raabro.rep(nil, input, :to, 0, 1); end
-#    def val_qmark(i); rep(nil, i, :val, 0, 1); end
-#    def array(i); eseq(:array, i, :sbstart, :val_qmark, :sep, :sbend); end
-
-        #t = Raabro.eseq(nil, i, :lt, :to_qmark, :com, :gt)
         t = arr(i)
 
         expect(t.to_a(:leaves => true)).to eq(
           [ nil, 1, 0, 2, nil, :eseq, [
-            [ nil, 1, 0, 1, nil, :str, '<' ],
-            [ nil, 1, 1, 1, nil, :str, '>' ]
+            [ nil, 1, 0, 1, nil, :str, '[' ],
+            [ nil, 1, 1, 1, nil, :str, ']' ]
           ] ]
         )
         expect(i.offset).to eq(2)

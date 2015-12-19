@@ -32,11 +32,13 @@ def onex(i); Raabro.str(:onex, i, 'x'); end
 def twox(i); Raabro.str(:twox, i, 'xx'); end
 def deux(i); Raabro.str(:deux, i, 'xx'); end
 
+# testing eseq...
+def com_qmark(i); Raabro.rep(nil, i, :com, 0, 1); end
 def val(i); Raabro.alt(nil, i, :cha, :arr); end
 def val_qmark(i); Raabro.rep(nil, i, :val, 0, 1); end
 def sbstart(i); Raabro.str(nil, i, '['); end
 def sbend(i); Raabro.str(nil, i, ']'); end
-def arr(i); Raabro.eseq(nil, i, :sbstart, :val_qmark, :com, :sbend); end
+def arr(i); Raabro.eseq(nil, i, :sbstart, :val_qmark, :com_qmark, :sbend); end
 
 
 #
