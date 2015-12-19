@@ -24,7 +24,6 @@ describe Raabro do
           [ nil, 1, 1, 1, nil, :rex, 'a' ],
           [ nil, 1, 2, 1, nil, :str, ',' ],
           [ nil, 1, 3, 1, nil, :rex, 'b' ],
-          [ nil, 0, 4, 0, nil, :str, [] ],
           [ nil, 1, 4, 1, nil, :str, '>' ]
         ] ]
       )
@@ -68,7 +67,7 @@ describe Raabro do
 
       it 'parses successfully' do
 
-        i = Raabro::Input.new('a,b>')
+        i = Raabro::Input.new('a,b>', prune: false)
 
         t = Raabro.eseq(:list, i, nil, :cha, :com, :gt)
 
@@ -77,7 +76,6 @@ describe Raabro do
             [ nil, 1, 0, 1, nil, :rex, 'a' ],
             [ nil, 1, 1, 1, nil, :str, ',' ],
             [ nil, 1, 2, 1, nil, :rex, 'b' ],
-            [ nil, 0, 3, 0, nil, :str, [] ],
             [ nil, 1, 3, 1, nil, :str, '>' ]
           ] ]
         )
@@ -98,8 +96,7 @@ describe Raabro do
             [ nil, 1, 0, 1, nil, :str, '<' ],
             [ nil, 1, 1, 1, nil, :rex, 'a' ],
             [ nil, 1, 2, 1, nil, :str, ',' ],
-            [ nil, 1, 3, 1, nil, :rex, 'b' ],
-            [ nil, 0, 4, 0, nil, :str, [] ],
+            [ nil, 1, 3, 1, nil, :rex, 'b' ]
           ] ]
         )
         expect(i.offset).to eq(4)
