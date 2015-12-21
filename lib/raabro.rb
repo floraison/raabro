@@ -76,6 +76,11 @@ module Raabro
       @children = []
     end
 
+    def empty?
+
+      @result == 1 && @length == 0
+    end
+
     def successful_children
 
       @children.select { |c| c.result == 1 }
@@ -380,12 +385,15 @@ module Raabro
           st = i > 0 ? _parse(seppa, input) : nil
           et = st == nil || st.result == 1 ? _parse(eltpa, input) : nil
 
+          break if st && et && st.empty? && et.result == 0
+          break if st && et && st.empty? && et.empty?
+
           r.children << st if st
           r.children << et if et
 
           break if et == nil
           break if et.result != 1
-          break if st && st.length == 0 && et.length == 0
+          #break if st && st.length == 0 && et.length == 0
 
           i = i + 1
         end
