@@ -24,6 +24,7 @@ describe Raabro do
           [ nil, 1, 1, 1, nil, :rex, 'a' ],
           [ nil, 1, 2, 1, nil, :str, ',' ],
           [ nil, 1, 3, 1, nil, :rex, 'b' ],
+          [ nil, 0, 4, 0, nil, :str, [] ],
           [ nil, 1, 4, 1, nil, :str, '>' ]
         ] ]
       )
@@ -76,6 +77,7 @@ describe Raabro do
             [ nil, 1, 0, 1, nil, :rex, 'a' ],
             [ nil, 1, 1, 1, nil, :str, ',' ],
             [ nil, 1, 2, 1, nil, :rex, 'b' ],
+            [ nil, 0, 3, 0, nil, :str, [] ],
             [ nil, 1, 3, 1, nil, :str, '>' ]
           ] ]
         )
@@ -96,7 +98,8 @@ describe Raabro do
             [ nil, 1, 0, 1, nil, :str, '<' ],
             [ nil, 1, 1, 1, nil, :rex, 'a' ],
             [ nil, 1, 2, 1, nil, :str, ',' ],
-            [ nil, 1, 3, 1, nil, :rex, 'b' ]
+            [ nil, 1, 3, 1, nil, :rex, 'b' ],
+            [ nil, 0, 4, 0, nil, :str, [] ]
           ] ]
         )
         expect(i.offset).to eq(4)
@@ -122,7 +125,7 @@ describe Raabro do
 
     context 'no progress' do
 
-      it 'parses successfully' do
+      it 'parses []' do
 
         i = Raabro::Input.new('[]', :prune => true)
 
@@ -135,6 +138,20 @@ describe Raabro do
           ] ]
         )
         expect(i.offset).to eq(2)
+      end
+
+      it 'parses [a,,a]' do
+
+        i = Raabro::Input.new('[a,,a]', :prune => true)
+
+        t = arr(i)
+
+        #expect(t.result).to eq(1)
+
+        expect(t.to_a(:leaves => true)).to eq(
+          :x
+        )
+        expect(i.offset).to eq(6)
       end
     end
   end

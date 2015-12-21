@@ -371,26 +371,26 @@ module Raabro
 
       if r.result == 1
 
-        i = 1
-        count = 0
+        i = 0
 
         loop do
 
-          i = (i + 1) % 2
-          pa = i == 0 ? eltpa : seppa
+          add = true
 
-          c = _parse(pa, input)
+          st = i > 0 ? _parse(seppa, input) : nil
+          et = st == nil || st.result == 1 ? _parse(eltpa, input) : nil
 
-          break if c.length < 1
+          r.children << st if st
+          r.children << et if et
 
-          r.children << c
+          break if et == nil
+          break if et.result != 1
+          break if st && st.length == 0 && et.length == 0
 
-          break if c.result != 1
-
-          count += 1
+          i = i + 1
         end
 
-        r.result = 0 if jseq && count < 1
+        r.result = 0 if jseq && i == 0
       end
 
       if r.result == 1 && endpa

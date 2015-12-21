@@ -24,7 +24,8 @@ describe Raabro do
           [ nil, 1, 1, 1, nil, :str, ',' ],
           [ nil, 1, 2, 1, nil, :rex, 'b' ],
           [ nil, 1, 3, 1, nil, :str, ',' ],
-          [ nil, 1, 4, 1, nil, :rex, 'c' ]
+          [ nil, 1, 4, 1, nil, :rex, 'c' ],
+          [ nil, 0, 5, 0, nil, :str, [] ]
         ] ]
       )
       expect(i.offset).to eq(5)
@@ -55,7 +56,9 @@ describe Raabro do
       t = Raabro.jseq(:j, i, :cha, :com)
 
       expect(t.to_a(:leaves => true)).to eq(
-        [ :j, 0, 0, 0, nil, :jseq, [] ]
+        [ :j, 0, 0, 0, nil, :jseq, [
+          [ nil, 0, 0, 0, nil, :rex, [] ]
+        ] ]
       )
       expect(i.offset).to eq(0)
     end
