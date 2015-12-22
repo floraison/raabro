@@ -33,10 +33,9 @@ def twox(i); Raabro.str(:twox, i, 'xx'); end
 def deux(i); Raabro.str(:deux, i, 'xx'); end
 
 # testing eseq...
-def com_qmark(i); Raabro.rep(nil, i, :com, 0, 1); end
-def val(i); Raabro.alt(nil, i, :cha, :arr); end
-def val_qmark(i); Raabro.rep(nil, i, :val, 0, 1); end
-def arr(i); Raabro.eseq(nil, i, :lt, :val_qmark, :com_qmark, :gt); end
+def acom(i); Raabro.rex(nil, i, /,?/); end
+def aval(i); Raabro.rex(nil, i, /[a-z]?/); end
+def arr(i); Raabro.eseq(nil, i, :lt, :aval, :acom, :gt); end
 
 
 #

@@ -134,7 +134,7 @@ describe Raabro do
         expect(t.to_a(:leaves => true)).to eq(
           [ nil, 1, 0, 2, nil, :eseq, [
             [ nil, 1, 0, 1, nil, :str, '<' ],
-            [ nil, 1, 1, 0, nil, :rep, '' ],
+            [ nil, 1, 1, 0, nil, :rex, '' ],
             [ nil, 1, 1, 1, nil, :str, '>' ]
           ] ]
         )
@@ -150,23 +150,11 @@ describe Raabro do
         expect(t.to_a(:leaves => true)).to eq(
           [ nil, 1, 0, 6, nil, :eseq, [
             [ nil, 1, 0, 1, nil, :str, '<' ],
-            [ nil, 1, 1, 1, nil, :rep, [
-              [ nil, 1, 1, 1, nil, :alt, [
-                [ nil, 1, 1, 1, nil, :rex, 'a' ]
-              ] ]
-            ] ],
-            [ nil, 1, 2, 1, nil, :rep, [
-              [ nil, 1, 2, 1, nil, :str, ',' ]
-            ] ],
-            [ nil, 1, 3, 0, nil, :rep, '' ],
-            [ nil, 1, 3, 1, nil, :rep, [
-              [ nil, 1, 3, 1, nil, :str, ',' ]
-            ] ],
-            [ nil, 1, 4, 1, nil, :rep, [
-              [ nil, 1, 4, 1, nil, :alt, [
-                [ nil, 1, 4, 1, nil, :rex, 'a' ]
-              ] ]
-            ] ],
+            [ nil, 1, 1, 1, nil, :rex, 'a' ],
+            [ nil, 1, 2, 1, nil, :rex, ',' ],
+            [ nil, 1, 3, 0, nil, :rex, '' ],
+            [ nil, 1, 3, 1, nil, :rex, ',' ],
+            [ nil, 1, 4, 1, nil, :rex, 'a' ],
             [ nil, 1, 5, 1, nil, :str, '>' ]
           ] ]
         )

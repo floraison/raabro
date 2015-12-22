@@ -393,7 +393,6 @@ module Raabro
 
           break if et == nil
           break if et.result != 1
-          #break if st && st.length == 0 && et.length == 0
 
           i = i + 1
         end
