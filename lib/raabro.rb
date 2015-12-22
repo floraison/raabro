@@ -108,9 +108,9 @@ module Raabro
 
     def gather(name, acc=[])
 
-      name = name.to_s
+      name = name ? name.to_s : nil
 
-      if @name.to_s == name
+      if (@name && name == nil) || (@name.to_s == name)
         acc << self
       else
         @children.each { |c| c.gather(name, acc) }

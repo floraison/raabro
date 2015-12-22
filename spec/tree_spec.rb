@@ -56,7 +56,42 @@ describe Raabro::Tree do
       )
     end
 
-    it 'returns all the nodes with a name if the given name is nil'
+    it 'returns all the nodes with a name if the given name is nil' do
+
+      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
+
+      expect(
+        t.gather(nil).collect { |n| n.to_a(:leaves) }
+      ).to eq([
+        [ :item, 1, 0, 1, nil, :alt, [
+          [ :num, 1, 0, 1, nil, :rex, "4" ]
+        ] ],
+        [ :item, 1, 2, 1, nil, :alt, [
+          [ :num, 1, 2, 1, nil, :rex, "5" ]
+        ] ],
+        [ :item, 1, 4, 1, nil, :alt, [
+          [ :num, 1, 4, 1, nil, :rex, "6" ]
+        ] ],
+        [ :item, 1, 6, 1, nil, :alt, [
+          [ :op, 1, 6, 1, nil, :rex, "+" ]
+        ] ],
+        [ :item, 1, 8, 1, nil, :alt, [
+          [ :num, 1, 8, 1, nil, :rex, "1" ]
+        ] ],
+        [ :item, 1, 10, 1, nil, :alt, [
+          [ :num, 1, 10, 1, nil, :rex, "2" ]
+        ] ],
+        [ :item, 1, 12, 1, nil, :alt, [
+          [ :num, 1, 12, 1, nil, :rex, "3" ]
+        ] ],
+        [ :item, 1, 14, 1, nil, :alt, [
+          [ :op, 1, 14, 1, nil, :rex, "*" ]
+        ] ],
+        [ :item, 1, 16, 1, nil, :alt, [
+          [:op, 1, 16, 1, nil, :rex, "+" ]
+        ] ]
+      ])
+    end
   end
 end
 
