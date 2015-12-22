@@ -39,6 +39,21 @@ describe Raabro::Tree do
     end
   end
 
+  describe '.sublookup' do
+
+    it 'skips the callee node' do
+
+      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
+      t = t.children[0]
+
+      expect(
+        t.sublookup(nil).to_a(:leaves)
+      ).to eq(
+        [ :num, 1, 0, 1, nil, :rex, '4' ]
+      )
+    end
+  end
+
   describe '.gather' do
 
     it 'returns all the nodes with a given name' do
@@ -64,32 +79,46 @@ describe Raabro::Tree do
         t.gather(nil).collect { |n| n.to_a(:leaves) }
       ).to eq([
         [ :item, 1, 0, 1, nil, :alt, [
-          [ :num, 1, 0, 1, nil, :rex, "4" ]
+          [ :num, 1, 0, 1, nil, :rex, '4' ]
         ] ],
         [ :item, 1, 2, 1, nil, :alt, [
-          [ :num, 1, 2, 1, nil, :rex, "5" ]
+          [ :num, 1, 2, 1, nil, :rex, '5' ]
         ] ],
         [ :item, 1, 4, 1, nil, :alt, [
-          [ :num, 1, 4, 1, nil, :rex, "6" ]
+          [ :num, 1, 4, 1, nil, :rex, '6' ]
         ] ],
         [ :item, 1, 6, 1, nil, :alt, [
-          [ :op, 1, 6, 1, nil, :rex, "+" ]
+          [ :op, 1, 6, 1, nil, :rex, '+' ]
         ] ],
         [ :item, 1, 8, 1, nil, :alt, [
-          [ :num, 1, 8, 1, nil, :rex, "1" ]
+          [ :num, 1, 8, 1, nil, :rex, '1' ]
         ] ],
         [ :item, 1, 10, 1, nil, :alt, [
-          [ :num, 1, 10, 1, nil, :rex, "2" ]
+          [ :num, 1, 10, 1, nil, :rex, '2' ]
         ] ],
         [ :item, 1, 12, 1, nil, :alt, [
-          [ :num, 1, 12, 1, nil, :rex, "3" ]
+          [ :num, 1, 12, 1, nil, :rex, '3' ]
         ] ],
         [ :item, 1, 14, 1, nil, :alt, [
-          [ :op, 1, 14, 1, nil, :rex, "*" ]
+          [ :op, 1, 14, 1, nil, :rex, '*' ]
         ] ],
         [ :item, 1, 16, 1, nil, :alt, [
-          [:op, 1, 16, 1, nil, :rex, "+" ]
+          [ :op, 1, 16, 1, nil, :rex, '+' ]
         ] ]
+      ])
+    end
+  end
+
+  describe '.subgather' do
+
+    it 'skips the callee node' do
+
+      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
+
+      expect(
+        t.children[0].subgather(nil).collect { |n| n.to_a(:leaves) }
+      ).to eq([
+        [ :num, 1, 0, 1, nil, :rex, '4' ]
       ])
     end
   end

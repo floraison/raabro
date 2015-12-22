@@ -102,7 +102,13 @@ module Raabro
 
       return self if @name && name == nil
       return self if @name.to_s == name
+      sublookup(name)
+    end
+
+    def sublookup(name)
+
       @children.each { |c| if n = c.lookup(name); return n; end }
+
       nil
     end
 
@@ -113,8 +119,15 @@ module Raabro
       if (@name && name == nil) || (@name.to_s == name)
         acc << self
       else
-        @children.each { |c| c.gather(name, acc) }
+        subgather(name, acc)
       end
+
+      acc
+    end
+
+    def subgather(name, acc=[])
+
+      @children.each { |c| c.gather(name, acc) }
 
       acc
     end
