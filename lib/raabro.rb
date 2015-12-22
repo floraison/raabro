@@ -98,8 +98,9 @@ module Raabro
 
     def lookup(name)
 
-      name = name.to_s
+      name = name ? name.to_s : nil
 
+      return self if @name && name == nil
       return self if @name.to_s == name
       @children.each { |c| if n = c.lookup(name); return n; end }
       nil

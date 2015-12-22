@@ -24,6 +24,19 @@ describe Raabro::Tree do
         ] ]
       )
     end
+
+    it 'returns the first named node if the given name is nil' do
+
+      t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
+
+      expect(
+        t.lookup(nil).to_a(:leaves)
+      ).to eq(
+        [ :item, 1, 0, 1, nil, :alt, [
+          [ :num, 1, 0, 1, nil, :rex, '4' ]
+        ] ]
+      )
+    end
   end
 
   describe '.gather' do
@@ -42,6 +55,8 @@ describe Raabro::Tree do
         ]
       )
     end
+
+    it 'returns all the nodes with a name if the given name is nil'
   end
 end
 
