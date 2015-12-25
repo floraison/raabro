@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    raabro (1.0.6)
+    raabro (1.1.0)
 
 GEM
   remote: https://rubygems.org/
