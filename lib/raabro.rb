@@ -472,8 +472,9 @@ module Raabro
 
     def rewrite_(tree)
 
-      c = tree.children.find { |c| c.length > 0 || c.name }
-      c ? rewrite(c) : nil
+      t = tree.lookup(nil)
+
+      t ? rewrite(t) : nil
     end
 
     def rewrite(tree)
