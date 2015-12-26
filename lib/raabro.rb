@@ -484,15 +484,20 @@ module Raabro
 
       send("rewrite_#{tree.name}", tree)
     end
+
+    def make_includable
+
+      def self.included(target)
+
+        target.instance_eval do
+          extend ::Raabro::ModuleMethods
+          extend self
+        end
+      end
+    end
   end
   extend ModuleMethods
 
-  def self.included(target)
-
-    target.instance_eval do
-      extend ::Raabro::ModuleMethods
-      extend self
-    end
-  end
+  make_includable
 end
 
