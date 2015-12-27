@@ -76,6 +76,12 @@ module Raabro
       @children = []
     end
 
+    def c0; @children[0]; end
+    def c1; @children[1]; end
+    def c2; @children[2]; end
+    def c3; @children[3]; end
+    def c4; @children[4]; end
+
     def empty?
 
       @result == 1 && @length == 0
