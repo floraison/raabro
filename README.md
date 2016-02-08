@@ -6,7 +6,7 @@
 
 A very dumb PEG parser library.
 
-Son to [aabro](https://github.com/flon-io/aabro), grandson to [neg](https://github.com/jmettraux/neg), grand-grandson to [parslet](https://github.com/kschiess/parslet).
+Son to [aabro](https://github.com/flon-io/aabro), grandson to [neg](https://github.com/jmettraux/neg), grand-grandson to [parslet](https://github.com/kschiess/parslet). There is also a javascript version [jaabro](https://github.com/jmettraux/jaabro).
 
 
 ## a sample parser/rewriter
