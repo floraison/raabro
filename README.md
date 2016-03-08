@@ -1,8 +1,8 @@
 
 # raabro
 
-[![Build Status](https://secure.travis-ci.org/jmettraux/raabro.png)](http://travis-ci.org/jmettraux/raabro)
-[![Gem Version](https://badge.fury.io/rb/raabro.png)](http://badge.fury.io/rb/raabro)
+[![Build Status](https://secure.travis-ci.org/jmettraux/raabro.svg)](http://travis-ci.org/jmettraux/raabro)
+[![Gem Version](https://badge.fury.io/rb/raabro.svg)](http://badge.fury.io/rb/raabro)
 
 A very dumb PEG parser library.
 
