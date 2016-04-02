@@ -81,6 +81,7 @@ module Raabro
     def c2; @children[2]; end
     def c3; @children[3]; end
     def c4; @children[4]; end
+    def clast; @children.last; end
 
     def empty?
 

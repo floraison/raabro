@@ -2,6 +2,11 @@
 = raabro CHANGELOG.txt
 
 
+== raabro 1.1.1  not yet released
+
+- Tree#clast
+
+
 == raabro 1.1.0  released 2016-02-09
 
 - many improvements
