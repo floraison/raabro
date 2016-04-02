@@ -2,3 +2,5 @@
 .ruby-version
 .rspec
 
+Gemfile.lock
+
