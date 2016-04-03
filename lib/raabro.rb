@@ -528,10 +528,17 @@ module Raabro
     nc = lc if tree.name == nil
     sc = tree.result == 1 ? _yl : _dg
 
+    str =
+      if tree.children.size == 0
+        " #{sc}#{tree.string.length == 0 ? "''" : tree.string.inspect}"
+      else
+        ''
+      end
+
     print "#{'  ' * depth}"
     print "#{lc}#{tree.result}"
     print " #{nc}#{tree.name.inspect} #{lc}#{tree.offset},#{tree.length}"
-    print " #{sc}#{tree.string.inspect}" if tree.children.size == 0
+    print str
     print "#{_rs}\n"
 
     tree.children.each { |c| self.pp(c, depth + 1) }
