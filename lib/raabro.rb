@@ -506,5 +506,35 @@ module Raabro
   extend ModuleMethods
 
   make_includable
+
+    # Black       0;30     Dark Gray     1;30
+    # Blue        0;34     Light Blue    1;34
+    # Green       0;32     Light Green   1;32
+    # Cyan        0;36     Light Cyan    1;36
+    # Red         0;31     Light Red     1;31
+    # Purple      0;35     Light Purple  1;35
+    # Brown       0;33     Yellow        1;33
+    # Light Gray  0;37     White         1;37
+
+  def self.pp(tree, depth=0)
+
+    _rs, _dg, _gn, _yl, _bl, _lg =
+      $stdout.tty? ?
+      [ "[0;0m", "[1;30m", "[0;32m", "[1;33m", "[0;34m", "[0;37m" ] :
+      [ '', '', '', '', '', '' ]
+
+    lc = tree.result == 1 ? _gn : _dg
+    nc = tree.result == 1 ? _bl : _lg
+    nc = lc if tree.name == nil
+    sc = tree.result == 1 ? _yl : _dg
+
+    print "#{'  ' * depth}"
+    print "#{lc}#{tree.result}"
+    print " #{nc}#{tree.name.inspect} #{lc}#{tree.offset},#{tree.length}"
+    print " #{sc}#{tree.string.inspect}" if tree.children.size == 0
+    print "#{_rs}\n"
+
+    tree.children.each { |c| self.pp(c, depth + 1) }
+  end
 end
 
