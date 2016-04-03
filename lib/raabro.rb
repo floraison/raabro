@@ -535,6 +535,8 @@ module Raabro
         ''
       end
 
+    print "#{_dg}t---\n" if depth == 0
+
     print "#{'  ' * depth}"
     print "#{lc}#{tree.result}"
     print " #{nc}#{tree.name.inspect} #{lc}#{tree.offset},#{tree.length}"
@@ -542,6 +544,12 @@ module Raabro
     print "#{_rs}\n"
 
     tree.children.each { |c| self.pp(c, depth + 1) }
+
+    if depth == 0
+      print _dg
+      print "input ln: #{tree.input.string.length}, tree ln: #{tree.length} "
+      print "---t\n"
+    end
   end
 end
 
