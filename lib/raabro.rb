@@ -549,6 +549,7 @@ module Raabro
       print _dg
       print "input ln: #{tree.input.string.length}, tree ln: #{tree.length} "
       print "---t\n"
+      print _rs
     end
   end
 end
