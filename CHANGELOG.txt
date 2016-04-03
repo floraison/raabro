@@ -2,6 +2,11 @@
 = raabro CHANGELOG.txt
 
 
+== raabro 1.1.2  not yet released
+
+- add Raabro.pp(tree)
+
+
 == raabro 1.1.1  released 2016-04-03
 
 - Tree#clast
