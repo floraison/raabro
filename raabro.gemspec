@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.summary = 'a very dumb PEG parser library'
 
   s.description = %{
-a very dumb PEG parser library
+A very dumb PEG parser library, with a horrible interface.
   }.strip
 
   #s.files = `git ls-files`.split("\n")
