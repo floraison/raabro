@@ -536,7 +536,12 @@ module Raabro
 
     print "#{_dg}t---\n" if depth == 0
 
-    print "#{'  ' * depth}"
+    #print "#{'  ' * depth}"
+    depth.times do |i|
+      pipe = i % 3 == 0 ? ': ' : '| '
+      print i.even? ? "#{_dg}#{pipe} " : '  '
+    end
+
     print "#{lc}#{tree.result}"
     print " #{nc}#{tree.name.inspect} #{lc}#{tree.offset},#{tree.length}"
     print str

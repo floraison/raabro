@@ -4,6 +4,8 @@
 
 == raabro 1.1.3  not yet released
 
+- add "tears" to Raabro.pp
+
 
 == raabro 1.1.2  released 2016-04-04
 
