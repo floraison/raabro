@@ -102,6 +102,11 @@ module Raabro
       @input.string[@offset, @length]
     end
 
+    def nonstring(l=7)
+
+      @input.string[@offset, l]
+    end
+
     def lookup(name)
 
       name = name ? name.to_s : nil
@@ -529,7 +534,9 @@ module Raabro
 
     str =
       if tree.children.size == 0
-        " #{sc}#{tree.string.length == 0 ? "''" : tree.string.inspect}"
+        " #{sc}#{tree.string.length == 0 ?
+        "#{_dg} >#{tree.nonstring(14).inspect[1..-2]}<" :
+        tree.string.inspect}"
       else
         ''
       end

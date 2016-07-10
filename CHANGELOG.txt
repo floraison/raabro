@@ -4,6 +4,7 @@
 
 == raabro 1.1.3  not yet released
 
+- display >nonstring(14)< in Raabro.pp
 - add "tears" to Raabro.pp
 
 
