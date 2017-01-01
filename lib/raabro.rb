@@ -107,13 +107,6 @@ module Raabro
       @input.string[@offset, l]
     end
 
-    def fail
-
-      @result = 0
-
-      self
-    end
-
     def lookup(name)
 
       name = name ? name.to_s : nil
@@ -382,52 +375,6 @@ module Raabro
         r.result = 1
         r.length = c.length
       end
-
-      r
-    end
-
-    def aseq(name, input, startpa, endpa, seppa, *pas)
-
-      fail ArgumentError.new(
-        'no elt parsers (aseq expects at least 6 args)'
-      ) if pas.empty?
-
-      start = input.offset
-      r = ::Raabro::Tree.new(name, :aseq, input)
-      r.result = 1
-
-      if startpa
-        c = _parse(startpa, input)
-        r.children << c
-        return r.fail if c.result != 1
-      end
-
-      while pa = pas.shift
-
-        c = _parse(pa, input)
-        r.children << c
-        return r.fail if c.result != 1
-
-        next if pas.empty?
-
-        c = _parse(seppa, input)
-        r.children << c
-        return r.fail if c.result != 1
-      end
-
-      if endpa
-        c = _parse(endpa, input)
-        r.children << c
-        return r.fail if c.result != 1
-      end
-
-      if r.result == 1
-        r.length = input.offset - start
-      else
-        input.offset = start
-      end
-
-      r.prune! if input.options[:prune]
 
       r
     end
