@@ -143,7 +143,7 @@ def eseq(name, input, startpa, eltpa, seppa, endpa)
 
 `seq` is special, it understands "quantifiers": `'?'`, `'+'` or `'*'`. They make behave `seq` a bit like a classical regex.
 
-```
+```ruby
 module CartParser include Raabro
 
   def fruit(i)
