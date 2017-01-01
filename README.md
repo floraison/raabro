@@ -139,6 +139,30 @@ def eseq(name, input, startpa, eltpa, seppa, endpa)
 ```
 
 
+## the `seq` parser and its quantifiers
+
+`seq` is special, it understands "quantifiers": `'?'`, `'+'` or `'*'`. They make behave `seq` a bit like a classical regex.
+
+```
+module CartParser include Raabro
+
+  def fruit(i)
+    rex(:fruit, i, /(tomato|apple|orange)/)
+  end
+  def vegetable(i)
+    rex(:vegetable, i, /(potato|cabbage|carrot)/)
+  end
+
+  def cart(i)
+    seq(:cart, i, :fruit, '*', :vegetable, '*')
+  end
+    # zero or more fruits followed by zero or more vegetables
+end
+```
+
+(Yes, this sample parser parses string like "appletomatocabbage", it's not very useful, but I hope you get the point about `.seq`)
+
+
 ## LICENSE
 
 MIT, see [LICENSE.txt](LICENSE.txt)
