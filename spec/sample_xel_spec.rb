@@ -112,6 +112,16 @@ describe Raabro do
         expect(Sample::Xel.parse('MUL(7,3) ')).to eq(nil)
         expect(Sample::Xel.parse('MUL(7,3')).to eq(nil)
       end
+
+      it 'parses (miss with error: true)' do
+
+        expect(
+          Sample::Xel.parse('MUL(7,3', error: true)
+        ).to eq(
+          [ 1, 8, 7, "MUL(7,3\n" +
+                     "       ^---" ]
+        )
+      end
     end
   end
 end

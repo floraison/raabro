@@ -55,6 +55,11 @@ module Raabro
 
       l < 0 ? @string[@offset..l] : @string[@offset, l]
     end
+
+    def at(i)
+
+      @string[i, 1]
+    end
   end
 
   class Tree
@@ -180,6 +185,45 @@ module Raabro
     def even_children
 
       cs = []; @children.each_with_index { |c, i| cs << c if i.even? }; cs
+    end
+
+    def error_location
+
+      error_tree = lookup_error
+      line, column = line_and_column(error_tree.offset)
+      visual = visual(line, column)
+
+      [ line, column, error_tree.offset, visual ]
+    end
+
+    def lookup_error
+
+      return nil if @result != 0
+      return self if @children.empty?
+      @children.each { |c| e = c.lookup_error; return e if e; }
+    end
+
+    def line_and_column(offset)
+
+      line = 1
+      column = 0
+
+      (0..offset).each do |off|
+
+        column += 1
+        next unless @input.at(off) == '\n'
+
+        line += 1
+        column = 1
+      end
+
+      [ line, column ]
+    end
+
+    def visual(line, column)
+
+      @input.string.split("\n")[line - 1] + "\n" +
+      ' ' * (column - 1) + '^---'
     end
   end
 
@@ -472,6 +516,7 @@ module Raabro
           all(nil, Raabro::Input.new(input, opts), root)
         end
 
+      return find_error(input, opts) if opts[:error] && t.result != 1
       return nil if opts[:prune] != false && t.result != 1
 
       t = t.children.first if t.parter == :all
@@ -479,6 +524,14 @@ module Raabro
       return rewrite(t) if opts[:rewrite] != false
 
       t
+    end
+
+    def find_error(input, opts)
+
+      t = parse(input, opts.merge(error: false, rewrite: false, prune: false))
+#Raabro.pp(t)
+
+      t.error_location
     end
 
     def rewrite_(tree)
