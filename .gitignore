@@ -1,4 +1,10 @@
 
+*.swp
+.vimrc
+.viminfo
+
+pkg/
+
 .ruby-version
 .rspec
 
@@ -8,6 +14,8 @@
 
 .errors
 .rspec.out
+.bxsinfo.yaml
+.bxsenvs.yaml
 
 Gemfile.lock
 
