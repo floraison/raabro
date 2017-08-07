@@ -1,8 +1,11 @@
 
-# raabro CHANGELOG.txt
+# raabro CHANGELOG.md
 
 
 ## raabro 1.1.4  not yet released
+
+* parse(x, error: true) will produce an error message
+  `[ line, column, offset, err_message, err_visual ]`
 
 
 ## raabro 1.1.3  released 2016-07-11

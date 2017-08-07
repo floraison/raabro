@@ -187,20 +187,28 @@ module Raabro
       cs = []; @children.each_with_index { |c, i| cs << c if i.even? }; cs
     end
 
-    def error_location
+    def extract_error
 
-      error_tree = lookup_error
-      line, column = line_and_column(error_tree.offset)
+#Raabro.pp(self, colors: true)
+      err_tree, stack = lookup_error
+
+      line, column = line_and_column(err_tree.offset)
+
+      path = stack.reverse.take(3).reverse.collect(&:inspect).join('/')
+      err_message = "parsing failed .../#{path}"
       visual = visual(line, column)
 
-      [ line, column, error_tree.offset, visual ]
+      [ line, column, err_tree.offset, err_message, visual ]
     end
 
-    def lookup_error
+    def lookup_error(stack=[])
 
       return nil if @result != 0
-      return self if @children.empty?
-      @children.each { |c| e = c.lookup_error; return e if e; }
+      return [ self, stack ] if @children.empty?
+      @children.each { |c|
+        es = c.lookup_error(stack.dup.push(self.name))
+        return es if es }
+      nil
     end
 
     def line_and_column(offset)
@@ -516,7 +524,7 @@ module Raabro
           all(nil, Raabro::Input.new(input, opts), root)
         end
 
-      return find_error(input, opts) if opts[:error] && t.result != 1
+      return reparse_for_error(input, opts, t) if opts[:error] && t.result != 1
       return nil if opts[:prune] != false && t.result != 1
 
       t = t.children.first if t.parter == :all
@@ -526,12 +534,15 @@ module Raabro
       t
     end
 
-    def find_error(input, opts)
+    def reparse_for_error(input, opts, t)
 
-      t = parse(input, opts.merge(error: false, rewrite: false, prune: false))
-#Raabro.pp(t)
+      t =
+        opts[:prune] == false ?
+        t :
+        parse(input, opts.merge(error: false, rewrite: false, prune: false))
+#Raabro.pp(t, colours: true)
 
-      t.error_location
+      t.extract_error
     end
 
     def rewrite_(tree)
@@ -573,10 +584,12 @@ module Raabro
     # Brown       0;33     Yellow        1;33
     # Light Gray  0;37     White         1;37
 
-  def self.pp(tree, depth=0)
+  def self.pp(tree, depth=0, opts={})
+
+   depth, opts = 0, depth if depth.is_a?(Hash)
 
     _rs, _dg, _gn, _yl, _bl, _lg =
-      $stdout.tty? ?
+      (opts[:colors] || opts[:colours] || $stdout.tty?) ?
       [ "[0;0m", "[1;30m", "[0;32m", "[1;33m", "[0;34m", "[0;37m" ] :
       [ '', '', '', '', '', '' ]
 
@@ -607,7 +620,7 @@ module Raabro
     print str
     print "#{_rs}\n"
 
-    tree.children.each { |c| self.pp(c, depth + 1) }
+    tree.children.each { |c| self.pp(c, depth + 1, opts) }
 
     if depth == 0
       print _dg
