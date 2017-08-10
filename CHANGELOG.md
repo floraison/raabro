@@ -4,6 +4,7 @@
 
 ## raabro 1.1.4  not yet released
 
+* fail with ArgumentError if Raabro.pp input is not a Raabro::Tree
 * parse(x, error: true) will produce an error message
   `[ line, column, offset, err_message, err_visual ]`
 

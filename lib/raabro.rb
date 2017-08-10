@@ -586,7 +586,11 @@ module Raabro
 
   def self.pp(tree, depth=0, opts={})
 
-   depth, opts = 0, depth if depth.is_a?(Hash)
+    fail ArgumentError.new(
+      'tree is not an instance of Raabro::Tree'
+    ) unless tree.is_a?(Raabro::Tree)
+
+    depth, opts = 0, depth if depth.is_a?(Hash)
 
     _rs, _dg, _gn, _yl, _bl, _lg =
       (opts[:colors] || opts[:colours] || $stdout.tty?) ?
