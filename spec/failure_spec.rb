@@ -8,26 +8,6 @@
 require 'spec_helper'
 
 
-module Sample::Cal2 include Raabro
-
-  # parse
-
-  def sp(i); rex(nil, i, /\s+/); end
-
-  def num(i); rex(:num, i, /-?[0-9]+/); end
-  def op(i); rex(:op, i, /[+\-*\/]/); end
-  def item(i); alt(:item, i, :num, :op); end
-
-  def suite(i); jseq(:suite, i, :item, :sp); end
-
-  # rewrite
-
-  def rewrite_op(t); t.string.to_sym; end
-  def rewrite_num(t); t.string.to_i; end
-  def rewrite_item(t); rewrite(t.sublookup(nil)); end
-  def rewrite_suite(t); t.subgather(:item).collect { |it| rewrite(it) }; end
-end
-
 module Sample::ToPlus include Raabro
 
   # parse
@@ -42,33 +22,71 @@ module Sample::ToPlus include Raabro
   end
 end
 
+module Sample::Fun include Raabro
+
+  # parse
+  #
+  # Last function is the root, "i" stands for "input".
+
+  def pa(i); rex(nil, i, /\(\s*/); end
+  def pz(i); rex(nil, i, /\)\s*/); end
+  def com(i); rex(nil, i, /,\s*/); end
+
+  def num(i); rex(:num, i, /-?[0-9]+\s*/); end
+
+  def args(i); eseq(:arg, i, :pa, :exp, :com, :pz); end
+  def funame(i); rex(:funame, i, /[a-z][a-z0-9]*/); end
+  def fun(i); seq(:fun, i, :funame, :args); end
+
+  def exp(i); alt(:exp, i, :fun, :num); end
+
+  # rewrite
+  #
+  # Names above (:num, :fun, ...) get a rewrite_xxx function.
+  # "t" stands for "tree".
+  #
+  # The trees with a nil name are handled by rewrite_(tree) a default
+  # rewrite function
+
+  def rewrite_num(t); t.string.to_i; end
+
+  def rewrite_fun(t)
+    [ t.children[0].string ] +
+    t.children[1].odd_children.collect { |a| rewrite(a) }
+  end
+end
+
 
 describe 'Raabro and parse failure' do
 
   describe 'when there is a syntax error' do
 
-    it 'points at the error' #do
-#
-#      input = '4 5 6+ 1 2 3 * +'
-#
-#      t = Sample::Cal2.parse(input)
-#      expect(t).to eq(nil)
-#
-#      e = Sample::Cal2.parse(input, error: true)
-#p e
-#    end
+    it 'points at the error' do
+
+      t = Sample::Fun.parse('f(a, b')
+      expect(t).to eq(nil)
+
+      expect(
+        Sample::Fun.parse('f(a, b', error: true)
+      ).to eq(
+        [ 1, 4, 3, 'parsing failed .../:exp/:fun/:arg', "f(a, b\n   ^---" ]
+      )
+    end
   end
 
   describe 'when not all is consumed' do
 
-    it 'points at the start of the remaining input'# do
-#
-#      t = Sample::ToPlus.parse('totota')
-#      expect(t).to eq(nil)
-#
-#      err = Sample::ToPlus.parse('totota', error: true)
-#p err
-#    end
+    it 'points at the start of the remaining input' do
+
+      t = Sample::ToPlus.parse('totota')
+      expect(t).to eq(nil)
+
+      expect(
+        Sample::ToPlus.parse('totota', error: true)
+      ).to eq(
+        [ 1, 5, 4, 'parsing failed .../', "totota\n    ^---" ]
+      )
+    end
   end
 end
 

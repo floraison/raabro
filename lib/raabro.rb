@@ -190,11 +190,11 @@ module Raabro
     def extract_error
 
 #Raabro.pp(self, colors: true)
-      err_tree, stack = lookup_error
+      err_tree, stack = lookup_error || lookup_all_error
 
       line, column = line_and_column(err_tree.offset)
 
-      path = stack.reverse.take(3).reverse.collect(&:inspect).join('/')
+      path = stack.compact.reverse.take(3).reverse.collect(&:inspect).join('/')
       err_message = "parsing failed .../#{path}"
       visual = visual(line, column)
 
@@ -203,11 +203,20 @@ module Raabro
 
     def lookup_error(stack=[])
 
+#print "le(): "; Raabro.pp(self, colors: true)
       return nil if @result != 0
       return [ self, stack ] if @children.empty?
       @children.each { |c|
         es = c.lookup_error(stack.dup.push(self.name))
         return es if es }
+      nil
+    end
+
+    def lookup_all_error
+
+#print "lae(): "; Raabro.pp(self, colors: true)
+      @children.each { |c| return [ c, [] ] if c.result == 0 }
+      @children.reverse.each { |c| es = c.lookup_all_error; return es if es }
       nil
     end
 
