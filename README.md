@@ -163,6 +163,31 @@ end
 (Yes, this sample parser parses string like "appletomatocabbage", it's not very useful, but I hope you get the point about `.seq`)
 
 
+## errors
+
+By default, a parser will return nil when it cannot successfully parse the input.
+
+For example, given the above [`Fun` parser](#a-sample-parserrewriter), parsing some truncated input would yield nil:
+```ruby
+tree = Sample::Fun.parse('f(a, b')
+  # yields `nil`...
+```
+
+One can reparse with `error: true` and receive an error array with the parse error details:
+```ruby
+err = Sample::Fun.parse('f(a, b', error: true)
+  # yields:
+  # [ line, column, offest, error_message, error_visual ]
+[ 1, 4, 3, 'parsing failed .../:exp/:fun/:arg', "f(a, b\n   ^---" ]
+```
+
+The last string in the error array looks like when printed out:
+```
+f(a, b
+   ^---
+```
+
+
 ## LICENSE
 
 MIT, see [LICENSE.txt](LICENSE.txt)
