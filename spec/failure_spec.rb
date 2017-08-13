@@ -84,7 +84,9 @@ describe 'Raabro and parse failure' do
       expect(
         Sample::ToPlus.parse('totota', error: true)
       ).to eq(
-        [ 1, 5, 4, 'parsing failed .../', "totota\n    ^---" ]
+        [ 1, 5, 4,
+          'parsing failed, not all input was consumed',
+          "totota\n    ^---" ]
       )
     end
   end

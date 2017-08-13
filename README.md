@@ -214,7 +214,7 @@ Sample::ToPlus.parse('totota', all: false)
 
 Sample::ToPlus.parse('totota', error: true)
   # yields
-[ 1, 5, 4, 'parsing failed, remaining input', "totota\n    ^---" ]
+[ 1, 5, 4, "parsing failed, not all input was consumed", "totota\n    ^---" ]
 ```
 
 The last string in the error array looks like when printed out:

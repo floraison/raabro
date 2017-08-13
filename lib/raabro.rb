@@ -194,9 +194,17 @@ module Raabro
 
       line, column = line_and_column(err_tree.offset)
 
-      path = stack.compact.reverse.take(3).reverse.collect(&:inspect).join('/')
-      err_message = "parsing failed .../#{path}"
-      visual = visual(line, column)
+      err_message =
+        if stack
+          path = stack
+           .compact.reverse.take(3).reverse
+           .collect(&:inspect).join('/')
+          "parsing failed .../#{path}"
+        else
+          "parsing failed, not all input was consumed"
+        end
+      visual =
+        visual(line, column)
 
       [ line, column, err_tree.offset, err_message, visual ]
     end
@@ -215,7 +223,7 @@ module Raabro
     def lookup_all_error
 
 #print "lae(): "; Raabro.pp(self, colors: true)
-      @children.each { |c| return [ c, [] ] if c.result == 0 }
+      @children.each { |c| return [ c, nil ] if c.result == 0 }
       @children.reverse.each { |c| es = c.lookup_all_error; return es if es }
       nil
     end
