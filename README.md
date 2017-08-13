@@ -167,7 +167,7 @@ end
 
 By default, a parser will return nil when it cannot successfully parse the input.
 
-For example, given the above [`Fun` parser](#a-sample-parserrewriter), parsing some truncated input would yield nil:
+For example, given the above [`Fun` parser](#a-sample-parserrewriter), parsing some truncated input would yield `nil`:
 ```ruby
 tree = Sample::Fun.parse('f(a, b')
   # yields `nil`...
@@ -185,6 +185,42 @@ The last string in the error array looks like when printed out:
 ```
 f(a, b
    ^---
+```
+
+### error when not all is consumed
+
+Consider the following toy parser:
+```ruby
+module ToPlus include Raabro
+
+  # parse
+
+  def to_plus(input); rep(:tos, input, :to, 1); end
+
+  # rewrite
+
+  def rewrite(t); [ :ok, t.string ]; end
+end
+```
+
+```ruby
+Sample::ToPlus.parse('totota')
+  # yields nil since all the input was not parsed, "ta" is remaining
+
+Sample::ToPlus.parse('totota', all: false)
+  # yields
+[ :ok, "toto" ]
+  # and doesn't care about the remaining input "ta"
+
+Sample::ToPlus.parse('totota', error: true)
+  # yields
+[ 1, 5, 4, 'parsing failed, remaining input', "totota\n    ^---" ]
+```
+
+The last string in the error array looks like when printed out:
+```
+totota
+    ^---
 ```
 
 
