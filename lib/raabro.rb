@@ -220,6 +220,10 @@ module Raabro
       nil
     end
 
+    # Not "lookup all errors" but "lookup all error", in other
+    # words lookup the point up until which the parser stopped (not
+    # consuming all the input)
+    #
     def lookup_all_error
 
 #print "lae(): "; Raabro.pp(self, colors: true)
@@ -236,10 +240,10 @@ module Raabro
       (0..offset).each do |off|
 
         column += 1
-        next unless @input.at(off) == '\n'
+        next unless @input.at(off) == "\n"
 
         line += 1
-        column = 1
+        column = 0
       end
 
       [ line, column ]

@@ -12,7 +12,9 @@ module Sample::ToPlus include Raabro
 
   # parse
 
-  def to_plus(input); rep(:tos, input, :to, 1); end
+  def sp_star(i); rex(nil, i, /\s*/);end
+  def to_space(i); seq(nil, i, :to, :sp_star); end
+  def to_plus(i); rep(:tos, i, :to_space, 1); end
 
   # rewrite
 
@@ -87,6 +89,22 @@ describe 'Raabro and parse failure' do
         [ 1, 5, 4,
           'parsing failed, not all input was consumed',
           "totota\n    ^---" ]
+      )
+    end
+
+    it 'points at the start of the remaining input (multiline)' do
+
+      s = "toto\n  ta"
+
+      t = Sample::ToPlus.parse(s)
+      expect(t).to eq(nil)
+
+      expect(
+        Sample::ToPlus.parse(s, error: true)
+      ).to eq(
+        [ 2, 3, 7,
+          'parsing failed, not all input was consumed',
+          "  ta\n  ^---" ]
       )
     end
   end
