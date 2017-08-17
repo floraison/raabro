@@ -94,7 +94,7 @@ describe 'Raabro and parse failure' do
 
     it 'points at the start of the remaining input (multiline)' do
 
-      s = "toto\n  ta"
+      s = "toto\r\n  ta"
 
       t = Sample::ToPlus.parse(s)
       expect(t).to eq(nil)
@@ -102,7 +102,7 @@ describe 'Raabro and parse failure' do
       expect(
         Sample::ToPlus.parse(s, error: true)
       ).to eq(
-        [ 2, 3, 7,
+        [ 2, 3, 8,
           'parsing failed, not all input was consumed',
           "  ta\n  ^---" ]
       )
