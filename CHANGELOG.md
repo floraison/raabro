@@ -2,7 +2,7 @@
 # raabro CHANGELOG.md
 
 
-## raabro 1.1.4  not yet released
+## raabro 1.1.4  released 2017-08-17
 
 * fail with ArgumentError if Raabro.pp input is not a Raabro::Tree
 * parse(x, error: true) will produce an error message
