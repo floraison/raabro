@@ -112,7 +112,7 @@ module Raabro
       @input.string[@offset, l]
     end
 
-    def lookup(name)
+    def lookup(name=nil)
 
       name = name ? name.to_s : nil
 
@@ -121,14 +121,14 @@ module Raabro
       sublookup(name)
     end
 
-    def sublookup(name)
+    def sublookup(name=nil)
 
       @children.each { |c| if n = c.lookup(name); return n; end }
 
       nil
     end
 
-    def gather(name, acc=[])
+    def gather(name=nil, acc=[])
 
       name = name ? name.to_s : nil
 
@@ -141,7 +141,7 @@ module Raabro
       acc
     end
 
-    def subgather(name, acc=[])
+    def subgather(name=nil, acc=[])
 
       @children.each { |c| c.gather(name, acc) }
 

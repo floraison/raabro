@@ -4,6 +4,8 @@
 
 ## raabro 1.1.5  not yet released
 
+* Default name to nil for Tree#subgather, #gather, #sublookup, and #lookup
+
 
 ## raabro 1.1.4  released 2017-08-17
 

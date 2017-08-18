@@ -30,7 +30,7 @@ describe Raabro::Tree do
       t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
 
       expect(
-        t.lookup(nil).to_a(:leaves)
+        t.lookup.to_a(:leaves)
       ).to eq(
         [ :item, 1, 0, 1, nil, :alt, [
           [ :num, 1, 0, 1, nil, :rex, '4' ]
@@ -47,7 +47,7 @@ describe Raabro::Tree do
       t = t.children[0]
 
       expect(
-        t.sublookup(nil).to_a(:leaves)
+        t.sublookup.to_a(:leaves)
       ).to eq(
         [ :num, 1, 0, 1, nil, :rex, '4' ]
       )
@@ -76,7 +76,7 @@ describe Raabro::Tree do
       t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
 
       expect(
-        t.gather(nil).collect { |n| n.to_a(:leaves) }
+        t.gather.collect { |n| n.to_a(:leaves) }
       ).to eq([
         [ :item, 1, 0, 1, nil, :alt, [
           [ :num, 1, 0, 1, nil, :rex, '4' ]
@@ -116,7 +116,7 @@ describe Raabro::Tree do
       t = Sample::Cal.parse('4 5 6 + 1 2 3 * +', rewrite: false)
 
       expect(
-        t.children[0].subgather(nil).collect { |n| n.to_a(:leaves) }
+        t.children[0].subgather.collect { |n| n.to_a(:leaves) }
       ).to eq([
         [ :num, 1, 0, 1, nil, :rex, '4' ]
       ])
