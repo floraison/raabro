@@ -163,6 +163,47 @@ end
 (Yes, this sample parser parses string like "appletomatocabbage", it's not very useful, but I hope you get the point about `.seq`)
 
 
+## trees
+
+An instance of `Raabro::Tree` is passed to `rewrite()` and `rewrite_{name}()` functions.
+
+The most useful methods of this class are:
+```ruby
+class Raabro::Tree
+
+  # Look for the first child or sub-child with the given name.
+  # If the given name is nil, looks for the first child with a name (not nil).
+  #
+  def sublookup(name=nil)
+
+  # Gathers all the children or sub-children with the given name.
+  # If the given name is nil, gathers all the children with a name (not nil).
+  # When a child matches, does not pursue gathering from the children of the
+  # matching child.
+  #
+  def subgather(name=nil)
+end
+```
+
+I'm using "child or sub-child" instead of "descendant" because once a child or sub-child matches, those methods do not consider the children or sub-children of that matching entity.
+
+Here is a closeup on the rewrite functions of the sample parser at [doc/readme1.rb](doc/readme1.rb):
+```ruby
+require 'raabro'
+
+module PathParser include Raabro
+
+  # (...)
+
+  def rewrite_name(t); t.string; end
+  def rewrite_off(t); t.string.to_i; end
+  def rewrite_index(t); rewrite(t.sublookup); end
+  def rewrite_path(t); t.subgather(:index).collect { |tt| rewrite(tt) }; end
+end
+```
+Where `rewrite_index(t)` returns the result of the rewrite of the first of its children that has a name and `rewrite_path(t)` collects the result of the rewrite of all of its children that have the "index" name.
+
+
 ## errors
 
 By default, a parser will return nil when it cannot successfully parse the input.
