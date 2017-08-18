@@ -2,7 +2,7 @@
 # raabro CHANGELOG.md
 
 
-## raabro 1.1.5  not yet released
+## raabro 1.1.5  released 2017-08-19
 
 * Default name to nil for Tree#subgather, #gather, #sublookup, and #lookup
 
