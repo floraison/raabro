@@ -6,7 +6,7 @@
 pkg/
 
 .ruby-version
-.rspec
+#.rspec
 
 .vimrc
 .viminfo
