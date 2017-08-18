@@ -187,7 +187,7 @@ end
 
 I'm using "child or sub-child" instead of "descendant" because once a child or sub-child matches, those methods do not consider the children or sub-children of that matching entity.
 
-Here is a closeup on the rewrite functions of the sample parser at [doc/readme1.rb](doc/readme1.rb):
+Here is a closeup on the rewrite functions of the sample parser at [doc/readme1.rb](doc/readme1.rb) (extracted from an early version of [floraison/dense](https://github.com/floraison/dense):
 ```ruby
 require 'raabro'
 
