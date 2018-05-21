@@ -30,7 +30,7 @@ A very dumb PEG parser library, with a horrible interface.
 
   #s.add_runtime_dependency 'tzinfo'
 
-  s.add_development_dependency 'rspec', '~> 3.4.0'
+  s.add_development_dependency 'rspec', '~> 3.7'
 
   s.require_path = 'lib'
 end
