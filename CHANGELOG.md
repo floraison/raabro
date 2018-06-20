@@ -2,6 +2,11 @@
 # raabro CHANGELOG.md
 
 
+## raabro 1.1.6  not yet released
+
+* Remove unused `add` var, gh-2, thanks to https://github.com/utilum
+
+
 ## raabro 1.1.5  released 2017-08-19
 
 * Default name to nil for Tree#subgather, #gather, #sublookup, and #lookup
