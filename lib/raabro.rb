@@ -478,8 +478,6 @@ module Raabro
 
         loop do
 
-          add = true
-
           st = i > 0 ? _parse(seppa, input) : nil
           et = st == nil || st.result == 1 ? _parse(eltpa, input) : nil
 
