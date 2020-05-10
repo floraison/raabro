@@ -78,15 +78,9 @@ module Raabro
       @children = successful_children
     end
 
-    def string
-
-      @input.string[@offset, @length]
-    end
-
-    def nonstring(l=7)
-
-      @input.string[@offset, l]
-    end
+    def string; @input.string[@offset, @length]; end
+    def strinp; @input.string[@offset, @length].strip; end
+    def nonstring(l=7); @input.string[@offset, l]; end
 
     def lookup(name=nil)
 
