@@ -134,6 +134,9 @@ def altg(name, input, *parsers)
 def rep(name, input, parser, min, max=0)
   # repeats the the wrapped parser
 
+def nott(name, input, parser)
+  # succeeds if the wrapped parser fails, fails if it succeeds
+
 def ren(name, input, parser)
   # renames the output of the wrapped parser
 

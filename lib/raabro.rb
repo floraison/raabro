@@ -403,6 +403,22 @@ module Raabro
     end
     alias rename ren
 
+    def nott(name, input, parser)
+
+      start = input.offset
+
+      r = ::Raabro::Tree.new(name, :nott, input)
+      c = _parse(parser, input)
+      r.children << c
+
+      r.length = 0
+      r.result = c.result == 1 ? 0 : 1
+
+      input.offset = start
+
+      r
+    end
+
     def all(name, input, parser)
 
       start = input.offset
