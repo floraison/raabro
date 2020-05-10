@@ -122,5 +122,17 @@ describe Raabro::Tree do
       ])
     end
   end
+
+  describe '.string' do
+
+    it 'returns the string covered by the tree' do
+
+      t = Sample::Arith.parse('11 + 12', rewrite: false)
+
+#Raabro.pp(t, colours: true)
+      expect(t.string).to eq('11 + 12')
+      expect(t.sublookup(:plus).string).to eq('+ ')
+    end
+  end
 end
 
