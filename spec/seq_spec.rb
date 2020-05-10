@@ -293,6 +293,78 @@ describe Raabro do
         )
       end
     end
+
+    describe 'the exclamation mark' do
+
+      it 'throws an error when lonely' do
+
+        i = Raabro::Input.new('tato')
+
+        expect {
+          t = Raabro.seq(nil, i, '!')
+        }.to raise_error(ArgumentError, 'lone quantifier !')
+      end
+
+      it 'hits post' do
+
+        i = Raabro::Input.new('tatu')
+
+        t = Raabro.seq(nil, i, :ta, :ta, '!')
+
+        expect(t.to_a(leaves: true)).to eq(
+          [ nil, 1, 0, 2, nil, :seq, [
+            [ nil, 1, 0, 2, nil, :str, 'ta' ],
+            [ nil, 1, 2, 0, nil, :nott, [
+              [ nil, 0, 2, 0, nil, :str, [] ] ] ] ] ]
+        )
+        expect(i.offset).to eq(2)
+      end
+
+      it 'misses post' do
+
+        i = Raabro::Input.new('tata')
+
+        t = Raabro.seq(nil, i, :ta, :ta, '!')
+
+        expect(t.to_a(leaves: true)).to eq(
+          [ nil, 0, 0, 0, nil, :seq, [
+            [ nil, 1, 0, 2, nil, :str, 'ta' ],
+            [ nil, 0, 2, 0, nil, :nott, [
+              [ nil, 1, 2, 2, nil, :str, 'ta' ] ] ] ] ]
+        )
+        expect(i.offset).to eq(0)
+      end
+
+      it 'hits pre' do
+
+        i = Raabro::Input.new('tatu')
+
+        t = Raabro.seq(nil, i, :tu, '!', :ta, :tu)
+
+        expect(t.to_a(leaves: true)).to eq(
+          [ nil, 1, 0, 4, nil, :seq, [
+            [ nil, 1, 0, 0, nil, :nott, [
+              [ nil, 0, 0, 0, nil, :str, [] ] ] ],
+              [ nil, 1, 0, 2, nil, :str, 'ta' ],
+              [ nil, 1, 2, 2, nil, :str, 'tu' ] ] ]
+        )
+        expect(i.offset).to eq(4)
+      end
+
+      it 'misses pre' do
+
+        i = Raabro::Input.new('tutu')
+
+        t = Raabro.seq(nil, i, :tu, '!', :ta, :tu)
+
+        expect(t.to_a(leaves: true)).to eq(
+          [ nil, 0, 0, 0, nil, :seq, [
+            [ nil, 0, 0, 0, nil, :nott, [
+              [ nil, 1, 0, 2, nil, :str, 'tu' ] ] ] ] ]
+        )
+        expect(i.offset).to eq(0)
+      end
+    end
   end
 end
 

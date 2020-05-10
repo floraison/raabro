@@ -159,6 +159,8 @@ def eseq(name, input, startpa, eltpa, seppa, endpa)
 
 `seq` is special, it understands "quantifiers": `'?'`, `'+'` or `'*'`. They make behave `seq` a bit like a classical regex.
 
+The `'!'` (bang, not) quantifier is explained at the end of this section.
+
 ```ruby
 module CartParser include Raabro
 
@@ -177,6 +179,16 @@ end
 ```
 
 (Yes, this sample parser parses string like "appletomatocabbage", it's not very useful, but I hope you get the point about `.seq`)
+
+The `'!'` (bang, not) quantifier is a kind of "negative lookahead".
+
+```ruby
+  def menu(i)
+    seq(:menu, i, :mise_en_bouche, :main, :main, '!', :dessert)
+  end
+```
+
+Lousy example, but here a main cannot follow a main.
 
 
 ## trees

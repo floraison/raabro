@@ -258,10 +258,11 @@ module Raabro
         # so that :plus and co can be overriden
 
       case parser
-        when '?', :q, :qmark then [ 0, 1 ]
-        when '*', :s, :star then [ 0, 0 ]
-        when '+', :p, :plus then [ 1, 0 ]
-        else nil
+      when '?', :q, :qmark then [ 0, 1 ]
+      when '*', :s, :star then [ 0, 0 ]
+      when '+', :p, :plus then [ 1, 0 ]
+      when '!' then :bang
+      else nil
       end
     end
 
@@ -293,7 +294,11 @@ module Raabro
         pa = parsers.shift
         break unless pa
 
-        if q = _quantify(parsers.first)
+        if parsers.first == '!'
+          parsers.shift
+          c = nott(nil, input, pa)
+          r.children << c
+        elsif q = _quantify(parsers.first)
           parsers.shift
           c = rep(nil, input, pa, *q)
           r.children.concat(c.children)
