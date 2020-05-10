@@ -80,6 +80,7 @@ module Raabro
 
     def string; @input.string[@offset, @length]; end
     def strinp; @input.string[@offset, @length].strip; end
+    alias strim strinp
     def nonstring(l=7); @input.string[@offset, l]; end
 
     def lookup(name=nil)

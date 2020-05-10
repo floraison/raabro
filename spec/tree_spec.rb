@@ -135,5 +135,18 @@ describe Raabro::Tree do
       expect(t.sublookup(:plus).strinp).to eq('+')
     end
   end
+
+  describe '.strim' do
+
+    it 'returns the string covered by the tree by stripped' do
+
+      t = Sample::Arith.parse('11 + 13', rewrite: false)
+
+#Raabro.pp(t, colours: true)
+      expect(t.strim).to eq('11 + 13')
+      expect(t.sublookup(:number).strim).to eq('11')
+      expect(t.sublookup(:plus).strim).to eq('+')
+    end
+  end
 end
 
