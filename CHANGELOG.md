@@ -2,8 +2,10 @@
 # raabro CHANGELOG.md
 
 
-## raabro 1.3.0  not yet released
+## raabro 1.3.0  released 2020-05-10
 
+* Add `nott` parser element
+* Add Tree#strinp and #strim
 * Skip 1.2.0 to align on http://github.com/jmettraux/jaabro
 
 
