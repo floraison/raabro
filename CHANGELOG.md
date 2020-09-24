@@ -2,7 +2,9 @@
 # raabro CHANGELOG.md
 
 
-## raabro 1.3.3  not yet released
+## raabro 1.3.3  released 2020-09-24
+
+* Merge Henrik's rewrite_ optimization
 
 
 ## raabro 1.3.2  released 2020-09-24
