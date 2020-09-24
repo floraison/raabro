@@ -1,6 +1,7 @@
 
 # raabro credits
 
+* Henryk Nyh https://github.com/henrik optimized rewrite_, gh-6
 * Utilum https://github.com/utilum removed unused var
 * John Mettraux https://github.com/jmettraux author and maintainer
 
