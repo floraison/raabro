@@ -565,7 +565,7 @@ module Raabro
 
     def rewrite(tree)
 
-      return !! methods.find { |m| m.to_s.match?(/^rewrite_/) } if tree == 0
+      return !! methods.find { |m| m.to_s.start_with?("rewrite_") } if tree == 0
         # return true when "rewrite_xxx" methods seem to have been provided
 
       send("rewrite_#{tree.name}", tree)
