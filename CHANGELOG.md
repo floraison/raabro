@@ -2,6 +2,9 @@
 # raabro CHANGELOG.md
 
 
+## raabro 1.3.2  not yet released
+
+
 ## raabro 1.3.1  released 2020-05-10
 
 * Add '!' (not) seq quantifier
