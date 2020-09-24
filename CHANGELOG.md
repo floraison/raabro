@@ -4,6 +4,8 @@
 
 ## raabro 1.3.2  not yet released
 
+* Make a tiny rewrite_ optimization
+
 
 ## raabro 1.3.1  released 2020-05-10
 
