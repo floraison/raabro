@@ -172,7 +172,7 @@ module Raabro
            .collect(&:inspect).join('/')
           "parsing failed .../#{path}"
         else
-          "parsing failed, not all input was consumed"
+          'parsing failed, not all input was consumed'
         end
       visual =
         visual(line, column)
@@ -182,7 +182,7 @@ module Raabro
 
     def lookup_error(stack=[])
 
-#print "le(): "; Raabro.pp(self, colors: true)
+#print 'le(): '; Raabro.pp(self, colors: true)
       return nil if @result != 0
       return [ self, stack ] if @children.empty?
       @children.each { |c|
@@ -565,7 +565,7 @@ module Raabro
 
     def rewrite(tree)
 
-      return !! methods.find { |m| m.to_s.start_with?("rewrite_") } if tree == 0
+      return !! methods.find { |m| m.to_s.start_with?('rewrite_') } if tree == 0
         # return true when "rewrite_xxx" methods seem to have been provided
 
       send("rewrite_#{tree.name}", tree)
