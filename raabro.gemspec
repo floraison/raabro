@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.authors = [ 'John Mettraux' ]
   s.email = [ 'jmettraux+flor@gmail.com' ]
-  s.homepage = 'http://github.com/floraison/raabro'
+  s.homepage = 'https://github.com/floraison/raabro'
   s.license = 'MIT'
   s.summary = 'a very dumb PEG parser library'
 
