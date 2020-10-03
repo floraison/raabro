@@ -148,5 +148,27 @@ describe Raabro::Tree do
       expect(t.sublookup(:plus).strim).to eq('+')
     end
   end
+
+  describe '.symbol' do
+
+    it 'returns the string covered by the tree as a symbol' do
+
+      i = Raabro::Input.new('Hello ')
+      t = chas(i)
+
+      expect(t.symbol).to eq(:Hello)
+    end
+  end
+
+  describe '.symbod' do
+
+    it 'returns the string covered by the tree as a downcased symbol' do
+
+      i = Raabro::Input.new('Hello ')
+      t = chas(i)
+
+      expect(t.symbod).to eq(:hello)
+    end
+  end
 end
 
