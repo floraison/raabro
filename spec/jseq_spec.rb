@@ -49,7 +49,7 @@ describe Raabro do
       expect(i.offset).to eq(5)
     end
 
-    it 'fails when zero elements' do
+    it 'fails when 0 elements' do
 
       i = Raabro::Input.new('')
 
@@ -61,6 +61,22 @@ describe Raabro do
         ] ]
       )
       expect(i.offset).to eq(0)
+    end
+
+    it 'does not include trailing separators' do
+
+      i = Raabro::Input.new('a,b,', :prune => false)
+
+      t = Raabro.jseq(:j, i, :cha, :com)
+
+      expect(t.to_a(:leaves => true)).to eq(
+        [:j, 1, 0, 3, nil, :jseq, [
+          [nil, 1, 0, 1, nil, :rex, 'a'],
+          [nil, 1, 1, 1, nil, :str, ','],
+          [nil, 1, 2, 1, nil, :rex, 'b'],
+          [nil, 0, 3, 1, nil, :str, []],
+          [nil, 0, 4, 0, nil, :rex, []]]]
+      )
     end
   end
 end

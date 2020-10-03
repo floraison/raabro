@@ -466,26 +466,36 @@ module Raabro
 
       if r.result == 1
 
-        i = 0
+        on_elt = false
+        count = 0
+        empty_stack = 0
 
         loop do
 
-          st = i > 0 ? _parse(seppa, input) : nil
-          et = st == nil || st.result == 1 ? _parse(eltpa, input) : nil
+          on_elt = ! on_elt
 
-          break if st && et && st.empty? && et.result == 0
-          break if st && et && st.empty? && et.empty?
+          cr = _parse(on_elt ? eltpa : seppa, input)
 
-          r.children << st if st
-          r.children << et if et
+          empty_stack = cr.empty? ? empty_stack + 1 : 0
+          cr.result = 0 if empty_stack > 1
+            #
+            # prevent "no progress"
 
-          break if et == nil
-          break if et.result != 1
+          r.children.push(cr)
 
-          i = i + 1
+          if cr.result != 1
+            if on_elt && count > 0
+              lsep = r.children[-2]
+              lsep.result = 0
+              input.offset = lsep.offset
+            end
+            break
+          end
+
+          count += 1
         end
 
-        r.result = 0 if jseq && i == 0
+        r.result = 0 if jseq && count < 1
       end
 
       if r.result == 1 && endpa
