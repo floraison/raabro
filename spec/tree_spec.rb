@@ -149,6 +149,28 @@ describe Raabro::Tree do
     end
   end
 
+  describe '.strind' do
+
+    it 'returns the string covered by the tree downcased' do
+
+      i = Raabro::Input.new('Hello')
+      t = chas(i)
+
+      expect(t.strind).to eq('hello')
+    end
+  end
+
+  describe '.strinpd' do
+
+    it 'returns the string covered by the tree stripped and downcased' do
+
+      i = Raabro::Input.new('AloaH ')
+      t = chas(i)
+
+      expect(t.strinpd).to eq('aloah')
+    end
+  end
+
   describe '.symbol' do
 
     it 'returns the string covered by the tree as a symbol' do

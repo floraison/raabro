@@ -84,6 +84,11 @@ module Raabro
     alias strim strinp
     def nonstring(l=7); @input.string[@offset, l]; end
 
+    def stringd; string.downcase; end
+    alias strind stringd
+    def stringpd; strinp.downcase; end
+    alias strinpd stringpd
+
     def symbol; strinp.to_sym; end
     def symbold; symbol.downcase; end
     alias symbod symbold
