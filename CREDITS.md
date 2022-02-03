@@ -1,9 +1,10 @@
 
 # raabro credits
 
-* Henryk Nyh https://github.com/henrik optimized rewrite_, gh-6
-* Utilum https://github.com/utilum removed unused var
-* John Mettraux https://github.com/jmettraux author and maintainer
+* Peter Goldstein, https://github.com/petergoldstein Travis to GHA, gh-7
+* Henryk, Nyh https://github.com/henrik optimized rewrite_, gh-6
+* Utilum, https://github.com/utilum removed unused var
+* John Mettraux, https://github.com/jmettraux author and maintainer
 
 
 ## aabro and jaabro credits
