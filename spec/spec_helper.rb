@@ -10,7 +10,7 @@ require 'pp'
 require 'raabro'
 
 #
-# parsers
+# test parsers
 
 def ta(i); Raabro.str(nil, i, 'ta'); end
 def to(i); Raabro.str(nil, i, 'to'); end
@@ -66,5 +66,28 @@ module Sample::Arith include Raabro
   def substraction(i); seq(:substraction, i, :number, :minus, :op_or_num); end
 
   def op_or_num(i); alt(nil, i, :addition, :substraction, :number); end
+end
+
+
+
+module Helpers
+
+  def monow; Process.clock_gettime(Process::CLOCK_MONOTONIC); end
+
+  def do_time(&block)
+
+    t0 = monow
+
+    r = block.call
+
+    [ r, monow - t0 ]
+  end
+end # Helpers
+
+RSpec.configure do |c|
+
+  c.alias_example_to(:they)
+  c.alias_example_to(:so)
+  c.include(Helpers)
 end
 
