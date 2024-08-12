@@ -124,6 +124,21 @@ describe Raabro do
       )
       expect(i.offset).to eq(4)
     end
+
+    it 'returns as soon as the job is done' do
+
+      i = Raabro::Input.new('to' * 10_000)
+
+      t, d = do_time { Raabro.seq(:twotoes, i, :to, :to) }
+
+      expect(t.to_a(leaves: true)).to eq(
+        [ :twotoes, 1, 0, 4, nil, :seq, [
+          [ nil, 1, 0, 2, nil, :str, 'to' ],
+          [ nil, 1, 2, 2, nil, :str, 'to' ] ] ]
+      )
+
+      expect(d).to be < 0.2 # seconds
+    end
   end
 
   describe 'seq and quantifiers' do
