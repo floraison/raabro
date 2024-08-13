@@ -123,6 +123,17 @@ describe Raabro do
             "       ^---" ]
         )
       end
+
+      it 'parses (success)' do
+
+        s = 'MUL(2' + ',2' * 20_000 + ')'
+        t, d = do_time { Sample::Xel.parse(s, error: true) }
+
+        expect(t).not_to eq(nil)
+
+        expect(d).to be < 2.1
+          # 0.836 on i7-1165G7 32G
+      end
     end
   end
 end
