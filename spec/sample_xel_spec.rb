@@ -131,8 +131,13 @@ describe Raabro do
 
         expect(t).not_to eq(nil)
 
-        expect(d).to be < 2.1
+        expect(d).to be < 7
+          #
           # 0.836 on i7-1165G7 32G
+          #
+          # OK at 2.1 for GitHub CI
+          #   expect for Ruby 2.3 which reaches 2.394s
+          #   expect for TruffleRuby 22.3 which reaches 4.771s
       end
     end
   end
