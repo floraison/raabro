@@ -18,6 +18,17 @@ Gem::Specification.new do |s|
 A very dumb PEG parser library, with a horrible interface.
   }.strip
 
+  s.metadata = {
+    'changelog_uri' => s.homepage + '/blob/master/CHANGELOG.md',
+    'documentation_uri' => s.homepage,
+    'bug_tracker_uri' => s.homepage + '/issues',
+    #'mailing_list_uri' => 'https://groups.google.com/forum/#!forum/floraison',
+    'homepage_uri' =>  s.homepage,
+    'source_code_uri' => s.homepage,
+    #'wiki_uri' => s.homepage + '/wiki',
+    'rubygems_mfa_required' => 'true',
+  }
+
   #s.files = `git ls-files`.split("\n")
   s.files = Dir[
     'README.{md,txt}',
