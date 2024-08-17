@@ -16,7 +16,7 @@ module Fun include Raabro
 
   def pstart(i); rex(nil, i, /\(\s*/); end
   def pend(i); rex(nil, i, /\)\s*/); end
-    # parenthese start and end, including trailing white space
+    # parentheses start and end, including trailing white space
 
   def comma(i); rex(nil, i, /,\s*/); end
     # a comma, including trailing white space

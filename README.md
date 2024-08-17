@@ -29,7 +29,7 @@ module Fun include Raabro
 
   def pstart(i); rex(nil, i, /\(\s*/); end
   def pend(i); rex(nil, i, /\)\s*/); end
-    # parenthese start and end, including trailing white space
+    # parentheses start and end, including trailing white space
 
   def comma(i); rex(nil, i, /,\s*/); end
     # a comma, including trailing white space
@@ -246,7 +246,7 @@ One can reparse with `error: true` and receive an error array with the parse err
 ```ruby
 err = Sample::Fun.parse('f(a, b', error: true)
   # yields:
-  # [ line, column, offest, error_message, error_visual ]
+  # [ line, column, offset, error_message, error_visual ]
 [ 1, 4, 3, 'parsing failed .../:exp/:fun/:arg', "f(a, b\n   ^---" ]
 ```
 
