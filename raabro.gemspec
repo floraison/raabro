@@ -32,7 +32,7 @@ A very dumb PEG parser library, with a horrible interface.
   #s.files = `git ls-files`.split("\n")
   s.files = Dir[
     '{README,CHANGELOG,CREDITS,LICENSE}.{md,txt}',
-    'Makefile',
+    #'Makefile',
     'lib/**/*.rb', #'spec/**/*.rb', 'test/**/*.rb',
     "#{s.name}.gemspec",
   ]
