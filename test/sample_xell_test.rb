@@ -5,9 +5,6 @@
 # Sun Dec 13 06:10:00 JST 2015
 #
 
-require 'spec_helper'
-
-
 module Sample::Xell include Raabro
 
   # parse
@@ -47,26 +44,24 @@ module Sample::Xell include Raabro
 end
 
 
-describe Raabro do
+group Raabro do
 
-  describe Sample::Xell do
+  group Sample::Xell do
 
-    describe '.parse' do
+    group '.parse' do
 
-      it 'parses (success)' do
+      test 'parses (success)' do
 
-        expect(
-          Sample::Xell.parse('MUL(7,-3)')
-        ).to eq(
-          [ 'MUL', 7, -3 ]
-        )
+        assert(
+          Sample::Xell.parse('MUL(7,-3)'),
+          [ 'MUL', 7, -3 ])
       end
 
-      it 'parses (rewrite: false, success)' do
+      test 'parses (rewrite: false, success)' do
 
-        expect(
-          Sample::Xell.parse('MUL(7,-3)', rewrite: false).to_s
-        ).to eq(%{
+        assert(
+          Sample::Xell.parse('MUL(7,-3)', rewrite: false).to_s,
+          %{
 1 nil 0,9
   1 :fun 0,9
     1 nil 0,3 "MUL"
@@ -78,13 +73,13 @@ describe Raabro do
       1 nil 6,2
         1 :num 6,2 "-3"
       1 nil 8,1 ")"
-        }.strip)
+          }.strip)
       end
 
-      it 'parses (miss)' do
+      test 'parses (miss)' do
 
-        expect(Sample::Xell.parse('MUL(7,3) ')).to eq(nil)
-        expect(Sample::Xell.parse('MUL(7,3')).to eq(nil)
+        assert Sample::Xell.parse('MUL(7,3) '), nil
+        assert Sample::Xell.parse('MUL(7,3'), nil
       end
     end
   end

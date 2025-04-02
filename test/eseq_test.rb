@@ -5,20 +5,19 @@
 # Mon Sep 21 10:15:35 JST 2015
 #
 
-require 'spec_helper'
 
+group Raabro do
 
-describe Raabro do
+  group '.eseq' do
 
-  describe '.eseq' do
-
-    it 'parses successfully' do
+    test 'parses successfully' do
 
       i = Raabro::Input.new('<a,b>')
 
       t = Raabro.eseq(:list, i, :lt, :cha, :com, :gt)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ :list, 1, 0, 5, nil, :eseq, [
           [ nil, 1, 0, 1, nil, :str, '<' ],
           [ nil, 1, 1, 1, nil, :rex, 'a' ],
@@ -26,128 +25,135 @@ describe Raabro do
           [ nil, 1, 3, 1, nil, :rex, 'b' ],
           [ nil, 0, 4, 0, nil, :str, [] ],
           [ nil, 1, 4, 1, nil, :str, '>' ]
-        ] ]
-      )
-      expect(i.offset).to eq(5)
+        ] ])
+
+      assert i.offset, 5
     end
 
-    it 'prunes' do
+    test 'prunes' do
 
       i = Raabro::Input.new('<a,b>', :prune => true)
 
       t = Raabro.eseq(:list, i, :lt, :cha, :com, :gt)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ :list, 1, 0, 5, nil, :eseq, [
           [ nil, 1, 0, 1, nil, :str, '<' ],
           [ nil, 1, 1, 1, nil, :rex, 'a' ],
           [ nil, 1, 2, 1, nil, :str, ',' ],
           [ nil, 1, 3, 1, nil, :rex, 'b' ],
           [ nil, 1, 4, 1, nil, :str, '>' ]
-        ] ]
-      )
-      expect(i.offset).to eq(5)
+        ] ])
+
+      assert i.offset, 5
     end
 
-    it 'parses <>' do
+    test 'parses <>' do
 
       i = Raabro::Input.new('<>', :prune => true)
 
       t = Raabro.eseq(:list, i, :lt, :cha, :com, :gt)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ :list, 1, 0, 2, nil, :eseq, [
           [ nil, 1, 0, 1, nil, :str, '<' ],
           [ nil, 1, 1, 1, nil, :str, '>' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
 
-    context 'no start parser' do
+    group 'no start parser' do
 
-      it 'parses successfully' do
+      test 'parses successfully' do
 
         i = Raabro::Input.new('a,b>', prune: false)
 
         t = Raabro.eseq(:list, i, nil, :cha, :com, :gt)
 
-        expect(t.to_a(:leaves => true)).to eq(
+        assert(
+          t.to_a(:leaves => true),
           [ :list, 1, 0, 4, nil, :eseq, [
             [ nil, 1, 0, 1, nil, :rex, 'a' ],
             [ nil, 1, 1, 1, nil, :str, ',' ],
             [ nil, 1, 2, 1, nil, :rex, 'b' ],
             [ nil, 0, 3, 0, nil, :str, [] ],
             [ nil, 1, 3, 1, nil, :str, '>' ]
-          ] ]
-        )
-        expect(i.offset).to eq(4)
+          ] ])
+
+        assert i.offset, 4
       end
     end
 
-    context 'no end parser' do
+    group 'no end parser' do
 
-      it 'parses successfully' do
+      test 'parses successfully' do
 
         i = Raabro::Input.new('<a,b')
 
         t = Raabro.eseq(:list, i, :lt, :cha, :com, nil)
 
-        expect(t.to_a(:leaves => true)).to eq(
+        assert(
+          t.to_a(:leaves => true),
           [ :list, 1, 0, 4, nil, :eseq, [
             [ nil, 1, 0, 1, nil, :str, '<' ],
             [ nil, 1, 1, 1, nil, :rex, 'a' ],
             [ nil, 1, 2, 1, nil, :str, ',' ],
             [ nil, 1, 3, 1, nil, :rex, 'b' ],
             [ nil, 0, 4, 0, nil, :str, [] ]
-          ] ]
-        )
-        expect(i.offset).to eq(4)
+          ] ])
+
+        assert i.offset, 4
       end
 
-      it 'prunes' do
+      test 'prunes' do
 
         i = Raabro::Input.new('<a,b', :prune => true)
 
         t = Raabro.eseq(:list, i, :lt, :cha, :com, nil)
 
-        expect(t.to_a(:leaves => true)).to eq(
+        assert(
+          t.to_a(:leaves => true),
           [ :list, 1, 0, 4, nil, :eseq, [
             [ nil, 1, 0, 1, nil, :str, '<' ],
             [ nil, 1, 1, 1, nil, :rex, 'a' ],
             [ nil, 1, 2, 1, nil, :str, ',' ],
             [ nil, 1, 3, 1, nil, :rex, 'b' ]
-          ] ]
-        )
-        expect(i.offset).to eq(4)
+          ] ])
+
+        assert i.offset, 4
       end
     end
 
-    context 'no progress' do
+    group 'no progress' do
 
-      it 'parses <>' do
+      test 'parses <>' do
 
         i = Raabro::Input.new('<>', :prune => true)
 
         t = arr(i)
 
-        expect(t.to_a(:leaves => true)).to eq(
+        assert(
+          t.to_a(:leaves => true),
           [ nil, 1, 0, 2, nil, :eseq, [
             [ nil, 1, 0, 1, nil, :str, '<' ],
             [ nil, 1, 1, 0, nil, :rex, '' ],
             [ nil, 1, 1, 1, nil, :str, '>' ]
-          ] ]
-        )
-        expect(i.offset).to eq(2)
+          ] ])
+
+        assert i.offset, 2
       end
 
-      it 'parses <a,,a>' do
+      test 'parses <a,,a>' do
 
         i = Raabro::Input.new('<a,,a>', :prune => true)
 
         t = arr(i)
 
-        expect(t.to_a(:leaves => true)).to eq(
+        assert(
+          t.to_a(:leaves => true),
           [ nil, 1, 0, 6, nil, :eseq, [
             [ nil, 1, 0, 1, nil, :str, '<' ],
             [ nil, 1, 1, 1, nil, :rex, 'a' ],
@@ -156,9 +162,9 @@ describe Raabro do
             [ nil, 1, 3, 1, nil, :rex, ',' ],
             [ nil, 1, 4, 1, nil, :rex, 'a' ],
             [ nil, 1, 5, 1, nil, :str, '>' ]
-          ] ]
-        )
-        expect(i.offset).to eq(6)
+          ] ])
+
+        assert i.offset, 6
       end
     end
   end

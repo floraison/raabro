@@ -15,10 +15,8 @@ pkg/
 .vimgrep
 *.swp
 
-.errors
-.rspec.out
-.bxsinfo.yaml
-.bxsenvs.yaml
+.probatio-output.rb
+.test-point
 
 Gemfile.lock
 

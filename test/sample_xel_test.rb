@@ -5,9 +5,6 @@
 # Mon Sep 21 16:58:01 JST 2015
 #
 
-require 'spec_helper'
-
-
 module Sample::Xel include Raabro
 
   # parse
@@ -41,58 +38,52 @@ module Sample::Xel include Raabro
 end
 
 
-describe Raabro do
+group Raabro do
 
-  describe Sample::Xel do
+  group Sample::Xel do
 
-    describe '.funame' do
+    group '.funame' do
 
-      it 'hits' do
+      test 'hits' do
 
         i = Raabro::Input.new('NADA')
 
         t = Sample::Xel.funame(i)
 
-        expect(t.to_a(:leaves => true)).to eq(
-          [ :funame, 1, 0, 4, nil, :rex, 'NADA' ]
-        )
+        assert t.to_a(:leaves => true), [ :funame, 1, 0, 4, nil, :rex, 'NADA' ]
       end
     end
 
-    describe '.fun' do
+    group '.fun' do
 
-      it 'parses a function call' do
+      test 'parses a function call' do
 
         i = Raabro::Input.new('SUM(1,MUL(4,5))', :prune => true)
 
         t = Sample::Xel.fun(i)
 
-        expect(t.result).to eq(1)
+        assert t.result, 1
 
-        expect(
-          Sample::Xel.rewrite(t)
-        ).to eq(
-          [ 'SUM', 1, [ 'MUL', 4, 5 ] ]
-        )
+        assert(
+          Sample::Xel.rewrite(t),
+          [ 'SUM', 1, [ 'MUL', 4, 5 ] ])
       end
     end
 
-    describe '.parse' do
+    group '.parse' do
 
-      it 'parses (success)' do
+      test 'parses (success)' do
 
-        expect(
-          Sample::Xel.parse('MUL(7,-3)')
-        ).to eq(
-          [ 'MUL', 7, -3 ]
-        )
+        assert(
+          Sample::Xel.parse('MUL(7,-3)'),
+          [ 'MUL', 7, -3 ])
       end
 
-      it 'parses (rewrite: false, success)' do
+      test 'parses (rewrite: false, success)' do
 
-        expect(
-          Sample::Xel.parse('MUL(7,-3)', rewrite: false).to_s
-        ).to eq(%{
+        assert(
+          Sample::Xel.parse('MUL(7,-3)', rewrite: false).to_s,
+          %{
 1 :exp 0,9
   1 :fun 0,9
     1 :funame 0,3 "MUL"
@@ -104,34 +95,32 @@ describe Raabro do
       1 :exp 6,2
         1 :num 6,2 "-3"
       1 nil 8,1 ")"
-        }.strip)
+          }.strip)
       end
 
-      it 'parses (miss)' do
+      test 'parses (miss)' do
 
-        expect(Sample::Xel.parse('MUL(7,3) ')).to eq(nil)
-        expect(Sample::Xel.parse('MUL(7,3')).to eq(nil)
+        assert Sample::Xel.parse('MUL(7,3) '), nil
+        assert Sample::Xel.parse('MUL(7,3'), nil
       end
 
-      it 'parses (miss with error: true)' do
+      test 'parses (miss with error: true)' do
 
-        expect(
-          Sample::Xel.parse('MUL(7,3', error: true)
-        ).to eq(
+        assert(
+          Sample::Xel.parse('MUL(7,3', error: true),
           [ 1, 8, 7, 'parsing failed .../:exp/:fun/:args',
             "MUL(7,3\n" +
-            "       ^---" ]
-        )
+            "       ^---" ])
       end
 
-      it 'parses (success)' do
+      test 'parses (success)' do
 
         s = 'MUL(2' + ',2' * 20_000 + ')'
         t, d = do_time { Sample::Xel.parse(s, error: true) }
 
-        expect(t).not_to eq(nil)
+        assert_not_nil t
 
-        expect(d).to be < 7
+        assert (d < 7)
           #
           # 0.836 on i7-1165G7 32G
           #

@@ -5,9 +5,6 @@
 # Sun Oct 11 04:24:32 SGT 2015
 #
 
-require 'spec_helper'
-
-
 module Sample::OwnRewrite include Raabro
 
   # parse
@@ -26,17 +23,15 @@ module Sample::OwnRewrite include Raabro
 end
 
 
-describe Raabro do
+group Raabro do
 
-  describe Sample::OwnRewrite do
+  group Sample::OwnRewrite do
 
-    it 'uses its own rewrite' do
+    test 'uses its own rewrite' do
 
-      expect(
-        Sample::OwnRewrite.parse('hello')
-      ).to eq(
-        [ :ok, 'hello' ]
-      )
+      assert(
+        Sample::OwnRewrite.parse('hello'),
+        [ :ok, 'hello' ])
     end
   end
 end

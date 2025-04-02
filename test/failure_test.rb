@@ -5,8 +5,6 @@
 # Thu Aug 10 07:52:29 JST 2017
 #
 
-require 'spec_helper'
-
 
 module Sample::ToPlus include Raabro
 
@@ -59,53 +57,47 @@ module Sample::Fun include Raabro
 end
 
 
-describe 'Raabro and parse failure' do
+group 'Raabro and parse failure' do
 
-  describe 'when there is a syntax error' do
+  group 'when there is a syntax error' do
 
-    it 'points at the error' do
+    test 'points at the error' do
 
       t = Sample::Fun.parse('f(a, b')
-      expect(t).to eq(nil)
+      assert t, nil
 
-      expect(
-        Sample::Fun.parse('f(a, b', error: true)
-      ).to eq(
-        [ 1, 4, 3, 'parsing failed .../:exp/:fun/:arg', "f(a, b\n   ^---" ]
-      )
+      assert(
+        Sample::Fun.parse('f(a, b', error: true),
+        [ 1, 4, 3, 'parsing failed .../:exp/:fun/:arg', "f(a, b\n   ^---" ])
     end
   end
 
-  describe 'when not all is consumed' do
+  group 'when not all is consumed' do
 
-    it 'points at the start of the remaining input' do
+    test 'points at the start of the remaining input' do
 
       t = Sample::ToPlus.parse('totota')
-      expect(t).to eq(nil)
+      assert t, nil
 
-      expect(
-        Sample::ToPlus.parse('totota', error: true)
-      ).to eq(
+      assert(
+        Sample::ToPlus.parse('totota', error: true),
         [ 1, 5, 4,
           'parsing failed, not all input was consumed',
-          "totota\n    ^---" ]
-      )
+          "totota\n    ^---" ])
     end
 
-    it 'points at the start of the remaining input (multiline)' do
+    test 'points at the start of the remaining input (multiline)' do
 
       s = "toto\r\n  ta"
 
       t = Sample::ToPlus.parse(s)
-      expect(t).to eq(nil)
+      assert t, nil
 
-      expect(
-        Sample::ToPlus.parse(s, error: true)
-      ).to eq(
+      assert(
+        Sample::ToPlus.parse(s, error: true),
         [ 2, 3, 8,
           'parsing failed, not all input was consumed',
-          "  ta\n  ^---" ]
-      )
+          "  ta\n  ^---" ])
     end
   end
 end

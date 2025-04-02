@@ -5,8 +5,7 @@
 # Sat Sep 19 21:12:35 JST 2015
 #
 
-require 'pp'
-
+#require 'pp'
 require 'raabro'
 
 #
@@ -69,10 +68,7 @@ module Sample::Arith include Raabro
 end
 
 
-
-module Helpers
-
-  def monow; Process.clock_gettime(Process::CLOCK_MONOTONIC); end
+class Probatio::Context
 
   def do_time(&block)
 
@@ -82,12 +78,5 @@ module Helpers
 
     [ r, monow - t0 ]
   end
-end # Helpers
-
-RSpec.configure do |c|
-
-  c.alias_example_to(:they)
-  c.alias_example_to(:so)
-  c.include(Helpers)
 end
 

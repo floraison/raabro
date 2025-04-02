@@ -5,164 +5,172 @@
 # Sun Sep 20 07:31:53 JST 2015
 #
 
-require 'spec_helper'
 
+group Raabro do
 
-describe Raabro do
+  group '.alt' do
 
-  describe '.alt' do
-
-    it "returns a tree with result == 0 in case of failure" do
+    test "returns a tree with result == 0 in case of failure" do
 
       i = Raabro::Input.new('tutu')
 
       t = Raabro.alt(nil, i, :ta, :to)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 0, 0, 0, nil, :alt, [
           [ nil, 0, 0, 0, nil, :str, [] ],
           [ nil, 0, 0, 0, nil, :str, [] ]
-        ] ]
-      )
-      expect(i.offset).to eq(0)
+        ] ])
+
+      assert i.offset, 0
     end
 
-    it "succeeds (1st alternative)" do
+    test "succeeds (1st alternative)" do
 
       i = Raabro::Input.new('tato')
 
       t = Raabro.alt(nil, i, :ta, :to)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 1, 0, 2, nil, :alt, [
           [ nil, 1, 0, 2, nil, :str, 'ta' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
 
-    it "succeeds (2nd alternative)" do
+    test "succeeds (2nd alternative)" do
 
       i = Raabro::Input.new('tato')
 
       t = Raabro.alt(nil, i, :to, :ta)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 1, 0, 2, nil, :alt, [
           [ nil, 0, 0, 0, nil, :str, [] ],
           [ nil, 1, 0, 2, nil, :str, 'ta' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
 
-    it 'prunes' do
+    test 'prunes' do
 
       i = Raabro::Input.new('tato', :prune => true)
 
       t = Raabro.alt(nil, i, :to, :ta)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 1, 0, 2, nil, :alt, [
           [ nil, 1, 0, 2, nil, :str, 'ta' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
 
-    context 'when not greedy (default)' do
+    group 'when not greedy (default)' do
 
-      it 'goes with the first successful result' do
+      test 'goes with the first successful result' do
 
         i = Raabro::Input.new('xx')
 
         t = Raabro.alt(nil, i, :onex, :twox)
 
-        expect(t.to_a(:leaves => true)).to eq(
+        assert(
+          t.to_a(:leaves => true),
           [ nil, 1, 0, 1, nil, :alt, [
             [ :onex, 1, 0, 1, nil, :str, 'x' ]
-          ] ]
-        )
-        expect(i.offset).to eq(1)
+          ] ])
+
+        assert i.offset, 1
       end
     end
 
-    context 'when greedy (last argument set to true)' do
+    group 'when greedy (last argument set to true)' do
 
-      it 'takes the longest successful result' do
+      test 'takes the longest successful result' do
 
         i = Raabro::Input.new('xx')
 
         t = Raabro.alt(nil, i, :onex, :twox, true)
 
-        expect(t.to_a(:leaves => true)).to eq(
+        assert(
+          t.to_a(:leaves => true),
           [ nil, 1, 0, 2, nil, :altg, [
             [ :onex, 0, 0, 1, nil, :str, [] ],
             [ :twox, 1, 0, 2, nil, :str, 'xx' ]
-          ] ]
-        )
-        expect(i.offset).to eq(2)
+          ] ])
+
+        assert i.offset, 2
       end
     end
   end
 
-  describe '.altg' do
+  group '.altg' do
 
-    it 'is greedy, always' do
+    test 'is greedy, always' do
 
       i = Raabro::Input.new('xx')
 
       t = Raabro.altg(nil, i, :onex, :twox)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 1, 0, 2, nil, :altg, [
           [ :onex, 0, 0, 1, nil, :str, [] ],
           [ :twox, 1, 0, 2, nil, :str, 'xx' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
 
-    it 'prunes' do
+    test 'prunes' do
 
       i = Raabro::Input.new('xx', :prune => true)
 
       t = Raabro.altg(nil, i, :onex, :twox)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 1, 0, 2, nil, :altg, [
           [ :twox, 1, 0, 2, nil, :str, 'xx' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
 
-    it 'declares a single winner' do
+    test 'declares a single winner' do
 
       i = Raabro::Input.new('xx', :prune => true)
 
       t = Raabro.altg(nil, i, :twox, :onex)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 1, 0, 2, nil, :altg, [
           [ :twox, 1, 0, 2, nil, :str, 'xx' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
 
-    it 'takes the longest and latest winner' do
+    test 'takes the longest and latest winner' do
 
       i = Raabro::Input.new('xx', :prune => true)
 
       t = Raabro.altg(nil, i, :twox, :onex, :deux)
 
-      expect(t.to_a(:leaves => true)).to eq(
+      assert(
+        t.to_a(:leaves => true),
         [ nil, 1, 0, 2, nil, :altg, [
           [ :deux, 1, 0, 2, nil, :str, 'xx' ]
-        ] ]
-      )
-      expect(i.offset).to eq(2)
+        ] ])
+
+      assert i.offset, 2
     end
   end
 end
