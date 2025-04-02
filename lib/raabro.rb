@@ -242,11 +242,11 @@ module Raabro
 
   module ModuleMethods
 
-    def _match(name, input, parter, regex_string_or_block)
+    def _match(name, input, parter, str_rex_or_block)
 
       r = Raabro::Tree.new(name, parter, input)
 
-      if l = input.match(regex_string_or_block)
+      if l = input.match(str_rex_or_block)
         r.result = 1
         r.length = l
         input.offset += l
