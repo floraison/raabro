@@ -122,6 +122,14 @@ def rex(name, input, regex_or_string)
   # matching a regexp
   # no need for ^ or \A, checks the match occurs at current offset
 
+def blk(name, input, &block)
+  #
+  # takes a block returning nil or false when it doesn't match or the
+  # length of the matching string if it matches
+  #
+  # the block take 0, 1 [ string_from_parse_point ], or 2 [ str, input ]
+  # arguments
+
 def seq(name, input, *parsers)
   # a sequence of parsers
 

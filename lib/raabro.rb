@@ -16,13 +16,16 @@ module Raabro
       @options = offset.is_a?(Hash) ? offset : options
     end
 
-    def match(str_or_regex)
+    def match(str_rex_or_block)
 
-      if str_or_regex.is_a?(Regexp)
-        m = @string[@offset..-1].match(str_or_regex)
+      if str_rex_or_block.is_a?(Regexp)
+        m = @string[@offset..-1].match(str_rex_or_block)
         m && (m.offset(0).first == 0) ? m[0].length : false
+      elsif str_rex_or_block.is_a?(Proc)
+        str_rex_or_block.call(
+          *[ @string[@offset..-1], self ].take(str_rex_or_block.arity))
       else # String or whatever responds to #to_s
-        s = str_or_regex.to_s
+        s = str_rex_or_block.to_s
         l = s.length
         @string[@offset, l] == s ? l : false
       end
@@ -239,11 +242,11 @@ module Raabro
 
   module ModuleMethods
 
-    def _match(name, input, parter, regex_or_string)
+    def _match(name, input, parter, regex_string_or_block)
 
       r = Raabro::Tree.new(name, parter, input)
 
-      if l = input.match(regex_or_string)
+      if l = input.match(regex_string_or_block)
         r.result = 1
         r.length = l
         input.offset += l
@@ -260,6 +263,11 @@ module Raabro
     def rex(name, input, regex_or_string)
 
       _match(name, input, :rex, Regexp.new(regex_or_string))
+    end
+
+    def blk(name, input, &block)
+
+      _match(name, input, :blk, block)
     end
 
     def _quantify(parser)
