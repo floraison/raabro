@@ -13,6 +13,16 @@ group Raabro do
 
       i = Raabro::Input.new('toto')
 
+      t = Raabro.rex(nil, i, /t[aou]/)
+
+      assert t.to_a, [ nil, 1, 0, 2, nil, :rex, [] ]
+      assert i.offset, 2
+    end
+
+    test 'misses' do
+
+      i = Raabro::Input.new('toto')
+
       t = Raabro.rex(nil, i, /t[ua]/)
 
       assert t.to_a, [ nil, 0, 0, 0, nil, :rex, [] ]
