@@ -368,7 +368,7 @@ module Raabro
           end
         else
           c = cc
-          break if c.result == 1
+          break if c && c.result == 1
         end
       end
 
