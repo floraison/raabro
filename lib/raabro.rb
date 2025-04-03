@@ -325,7 +325,7 @@ module Raabro
           r.children << c
         end
 
-        break if c.result != 1
+        break if c && c.result != 1
       end
 
       if c && c.result == 1
