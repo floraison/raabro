@@ -623,7 +623,7 @@ module Raabro
     depth, opts = 0, depth if depth.is_a?(Hash)
 
     _rs, _dg, _gn, _yl, _bl, _lg =
-      (opts[:colors] || opts[:colours] || $stdout.tty?) ?
+      (opts[:colors] || opts[:colours]) ?
       [ "[0;0m", "[0;90m", "[0;32m", "[1;33m", "[0;34m", "[0;37m" ] :
       [ '', '', '', '', '', '' ]
 
