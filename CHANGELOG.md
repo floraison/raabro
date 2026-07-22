@@ -2,7 +2,12 @@
 # raabro CHANGELOG.md
 
 
-## raabro 1.5.0  not yet released
+## raabro 1.5.0  released 2026-07-22
+
+* Follow colours: true/false when Raabro.pp(t)
+* Use 0;90 for Raabro.pp dark gray
+* Harden alt() when no :subparser returns nil
+* Harden seq() when no :subparser returns nil
 
 
 ## raabro 1.4.0  released 2020-10-06
