@@ -452,7 +452,7 @@ module Raabro
       c = _parse(parser, input)
       r.children << c
 
-      if c.length < length
+      if c.result != 1 || c.length < length
         input.offset = start
       else
         r.result = 1
