@@ -176,7 +176,9 @@ module Raabro
 #Raabro.pp(self, colors: true)
       err_tree, stack = lookup_error || lookup_all_error
 
-      line, column = line_and_column(err_tree.offset)
+      matched = @parter == :all ? c0 : self
+      offset = err_tree ? err_tree.offset : matched.offset + matched.length
+      line, column = line_and_column(offset)
 
       err_message =
         if stack
@@ -190,7 +192,7 @@ module Raabro
       visual =
         visual(line, column)
 
-      [ line, column, err_tree.offset, err_message, visual ]
+      [ line, column, offset, err_message, visual ]
     end
 
     def lookup_error(stack=[])
@@ -221,7 +223,7 @@ module Raabro
       line = 1
       column = 0
 
-      (0..offset).each do |off|
+      (0...offset).each do |off|
 
         column += 1
         next unless @input.at(off) == "\n"
@@ -230,12 +232,12 @@ module Raabro
         column = 0
       end
 
-      [ line, column ]
+      [ line, column + 1 ]
     end
 
     def visual(line, column)
 
-      @input.string.split("\n")[line - 1] + "\n" +
+      @input.string.split("\n", -1)[line - 1].to_s + "\n" +
       ' ' * (column - 1) + '^---'
     end
   end
